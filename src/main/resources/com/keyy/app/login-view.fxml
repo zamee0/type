@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="20" style="-fx-background-color: #ffffff; -fx-padding: 40;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.keyy.app.LoginController">
+
+    <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="KEYY" />
+    
+    <VBox spacing="10" style="-fx-max-width: 300;">
+        <Label text="Username:" />
+        <TextField fx:id="usernameField" promptText="Enter username" />
+        
+        <Label text="Password:" />
+        <PasswordField fx:id="passwordField" promptText="Enter password" />
+        
+        <Label fx:id="messageLabel" style="-fx-text-fill: red;" />
+        
+        <Button fx:id="loginBtn" maxWidth="Infinity" style="-fx-padding: 10; -fx-font-size: 14px;" text="Login" />
+        
+        <Button fx:id="registerBtn" maxWidth="Infinity" style="-fx-padding: 10; -fx-font-size: 14px;" text="Register" />
+    </VBox>
+
+</VBox>
