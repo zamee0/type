@@ -1,87 +1,83 @@
 package com.keyy.app;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.stage.Screen;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.input.KeyCombination;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 public class dashboardcontrol {
 
-    @FXML
-    private Label welcomeLabel;
-
-    @FXML
-    private Button startTestBtn;
-
-    @FXML
-    private Button progressBtn;
-
-    @FXML
-    private Button logoutBtn;
+    @FXML private Label welcomeLabel;
+    @FXML private Button startGameBtn;
+    @FXML private Button startGameBtnCenter;
+    @FXML private Button profileBtn;
+    @FXML private Button localhostBtn;
+    @FXML private Button leaderboardBtn;
+    @FXML private Button settingsBtn;
+    @FXML private Button logoutBtn;
 
     private String username;
 
     @FXML
-    public void initialize()
-    {
-        startTestBtn.setOnAction(e -> startTest());
-        progressBtn.setOnAction(e -> showProgress());
-        logoutBtn.setOnAction(e -> logout());
+    public void initialize() {
+        startGameBtn.setOnAction(e -> navigate("typing-view.fxml", "KEYY - Typing Test", ctrl -> {
+            if (ctrl instanceof TypingController)
+                ((TypingController) ctrl).setUsername(username);
+        }));
 
+        startGameBtnCenter.setOnAction(e -> navigate("typing-view.fxml", "KEYY - Typing Test", ctrl -> {
+            if (ctrl instanceof TypingController)
+                ((TypingController) ctrl).setUsername(username);
+        }));
+
+        profileBtn.setOnAction(e -> navigate("profile-view.fxml", "KEYY - My Profile", ctrl -> {
+            if (ctrl instanceof ProfileController)
+                ((ProfileController) ctrl).setUsername(username);
+        }));
+
+        localhostBtn.setOnAction(e -> navigate("localhost-view.fxml", "KEYY - Local Host", ctrl -> {
+            if (ctrl instanceof LocalhostController)
+                ((LocalhostController) ctrl).setUsername(username);
+        }));
+
+        leaderboardBtn.setOnAction(e -> navigate("leaderboard-view.fxml", "KEYY - Leaderboard", ctrl -> {
+            if (ctrl instanceof LeaderboardController)
+                ((LeaderboardController) ctrl).setUsername(username);
+        }));
+
+        settingsBtn.setOnAction(e -> navigate("settings-view.fxml", "KEYY - Settings", ctrl -> {
+            if (ctrl instanceof SettingsController)
+                ((SettingsController) ctrl).setUsername(username);
+        }));
+
+        logoutBtn.setOnAction(e -> logout());
     }
 
-
-    public void setUsername(String username)
-    {
+    public void setUsername(String username) {
         this.username = username;
         welcomeLabel.setText("Welcome, " + username + "!");
     }
 
-
-
-    private void startTest() {
+    private void navigate(String fxml, String title, ControllerInit init) {
         try {
-            // Load typing test screen
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("typing-view.fxml"));
-            Scene scene = new Scene(loader.load(), 800, 500);
-
-            // Pass username to typing controller
-            TypingController controller = loader.getController();
-            controller.setUsername(username);
-
-            // Switch scene
-            Stage stage = (Stage) startTestBtn.getScene().getWindow();
-            stage.setScene(scene);
-            stage.setTitle("Typing Test");
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            Stage stage = (Stage) startGameBtn.getScene().getWindow();
+            Object ctrl = SceneHelper.loadScene(stage, fxml, title);
+            init.setup(ctrl);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
-
-    private void showProgress() {
-        System.out.println("");
-    }
-
-
 
     private void logout() {
         try {
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
-            Scene scene = new Scene(loader.load(), 500, 400);
-
             Stage stage = (Stage) logoutBtn.getScene().getWindow();
-            stage.setScene(scene);
-            stage.setTitle("Login");
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            SceneHelper.loadScene(stage, "login-view.fxml", "KEYY - Typing Speed Test");
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
+    }
+
+    @FunctionalInterface
+    interface ControllerInit {
+        void setup(Object controller);
     }
 }

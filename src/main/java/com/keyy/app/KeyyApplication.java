@@ -6,22 +6,20 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class KeyyApplication extends Application {
+
     @Override
     public void start(Stage stage) throws Exception {
-
         UserManager.initialize();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
-        Scene scene = new Scene(loader.load(), 500, 400);
+        Scene scene = new Scene(loader.load(), 900, 600);
 
-        stage.setTitle("Typing Speed Test");
+        stage.setTitle("KEYY - Typing Speed Test");
         stage.setScene(scene);
-
         stage.setResizable(true);
-        stage.setMaximized(true);
-
         stage.show();
     }
+
     public static void main(String[] args) {
         launch(args);
     }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<VBox spacing="0"
+      xmlns="http://javafx.com/javafx/17.0.12"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.keyy.app.dashboardcontrol">
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="16" style="-fx-padding: 16 24 16 24; -fx-border-color: transparent transparent #cccccc transparent; -fx-border-width: 0 0 1 0;">
+        <Button fx:id="backBtn" text="&lt; Back"/>
+        <Label text="Local Host" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+    </HBox>
+
+    <!-- Empty body as requested -->
+    <VBox VBox.vgrow="ALWAYS"/>
+
+</VBox>

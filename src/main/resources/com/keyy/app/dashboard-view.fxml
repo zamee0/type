@@ -1,63 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
 
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.keyy.app.dashboardcontrol">
 
-<VBox alignment="CENTER" prefHeight="380" prefWidth="490" spacing="30" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.keyy.app.dashboardcontrol">
+    <!-- Left sidebar navigation -->
+    <left>
+        <VBox spacing="0" prefWidth="200" style="-fx-background-color: #2b2b2b;">
+            <padding><Insets top="30" bottom="30"/></padding>
 
-    <padding>
-        <Insets bottom="40" left="40" right="40" top="40" />
-    </padding>
+            <Label text="KEYY"
+                   style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: white; -fx-padding: 0 20 20 20;"/>
 
-    <!-- Welcome Message -->
-    <Label fx:id="welcomeLabel" text="Welcome, User!">
-        <style>
-            -fx-font-size: 28px;
-            -fx-font-weight: bold;
-            -fx-text-fill: black ;
-        </style>
-      <font>
-         <Font size="18.0" />
-      </font>
-    </Label>
+            <Button fx:id="startGameBtn"   text="Start Game"   maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT; -fx-padding: 14 20 14 20; -fx-cursor: hand;"/>
+            <Button fx:id="profileBtn"     text="My Profile"   maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT; -fx-padding: 14 20 14 20; -fx-cursor: hand;"/>
+            <Button fx:id="localhostBtn"   text="Local Host"   maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT; -fx-padding: 14 20 14 20; -fx-cursor: hand;"/>
+            <Button fx:id="leaderboardBtn" text="Leaderboard"  maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT; -fx-padding: 14 20 14 20; -fx-cursor: hand;"/>
+            <Button fx:id="settingsBtn"    text="Settings"     maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT; -fx-padding: 14 20 14 20; -fx-cursor: hand;"/>
 
-    <!-- Buttons Container -->
-    <VBox alignment="CENTER" maxWidth="350" spacing="15">
+            <Region VBox.vgrow="ALWAYS"/>
 
-        <!-- Start Test Button -->
-        <Button fx:id="startTestBtn" maxWidth="Infinity" prefHeight="56.0" prefWidth="350.0" text="Start Typing Test">
-            <style>
-                -fx-font-size: 16px;
-                -fx-padding: 15px;
-                -fx-background-color: #4CAF50;
-                -fx-text-fill: white;
-            </style>
-        </Button>
+            <Button fx:id="logoutBtn" text="Logout" maxWidth="Infinity"
+                    style="-fx-background-color: transparent; -fx-text-fill: #ff6b6b; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT; -fx-padding: 14 20 14 20; -fx-cursor: hand;"/>
+        </VBox>
+    </left>
 
-        <!-- View Progress Button (Optional) -->
-        <Button fx:id="progressBtn" maxWidth="Infinity" text="View Progress">
-            <style>
-                -fx-font-size: 16px;
-                -fx-padding: 15px;
-                -fx-background-color: #2196F3;
-                -fx-text-fill: white;
-            </style>
-        </Button>
+    <!-- Main content area -->
+    <center>
+        <VBox alignment="CENTER" spacing="20">
+            <padding><Insets top="60" right="60" bottom="60" left="60"/></padding>
 
+            <Label fx:id="welcomeLabel" text="Welcome!"
+                   style="-fx-font-size: 30px; -fx-font-weight: bold;"/>
 
-        <!-- Logout Button -->
-        <Button fx:id="logoutBtn" maxWidth="Infinity" text="Logout">
-            <style>
-                -fx-font-size: 16px;
-                -fx-padding: 15px;
-                -fx-background-color: #f44336;
-                -fx-text-fill: white;
-            </style>
-        </Button>
+            <Label text="Select an option from the menu to get started."
+                   style="-fx-font-size: 14px;"/>
 
-    </VBox>
+            <Button fx:id="startGameBtnCenter" text="Start Game Now" style="-fx-font-size: 16px; -fx-padding: 14 40 14 40;"/>
+        </VBox>
+    </center>
 
-</VBox>
+</BorderPane>
