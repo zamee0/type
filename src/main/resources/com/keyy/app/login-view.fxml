@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" spacing="20" style="-fx-background-color: #ffffff; -fx-padding: 40;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.keyy.app.LoginController">
+<VBox alignment="CENTER" prefHeight="380" prefWidth="490.0" spacing="20" style="-fx-background-color:#FDFDFD; -fx-padding: 40;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.keyy.app.LoginController">
 
     <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="KEYY" />
     

@@ -18,18 +18,18 @@ public class LoginController {
         loginBtn.setOnAction(e -> handleLogin());
         registerBtn.setOnAction(e -> handleRegister());
     }
-    
+
     private void handleLogin() {
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
-        
+
         if (username.isEmpty() || password.isEmpty()) {
             messageLabel.setText("Please fill all fields");
             return;
         }
-        
+
         if (UserManager.loginUser(username, password)) {
-            loadTypingTest(username);
+            loadDashboard(username); // ← Dashboard load koro
         } else {
             messageLabel.setText("Invalid credentials");
         }
@@ -45,27 +45,29 @@ public class LoginController {
         }
         
         if (UserManager.registerUser(username, password)) {
-            messageLabel.setText("Registration successful! Please login.");
+            messageLabel.setText("registration is successful.Now you can login.");
             messageLabel.setStyle("-fx-text-fill: green;");
         } else {
             messageLabel.setText("Username already exists");
             messageLabel.setStyle("-fx-text-fill: red;");
         }
     }
-    
-    private void loadTypingTest(String username) {
+
+    private void loadDashboard(String username) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("typing-view.fxml"));
-            Scene scene = new Scene(loader.load(), 800, 500);
-            
-            TypingController controller = loader.getController();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
+            Scene scene = new Scene(loader.load(), 600, 500);
+
+
+            dashboardcontrol controller = loader.getController();
             controller.setUsername(username);
-            
+
             Stage stage = (Stage) loginBtn.getScene().getWindow();
             stage.setScene(scene);
-            stage.setTitle("Typing Test - " + username);
+            stage.setTitle("Dashboard - " + username);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 }

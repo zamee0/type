@@ -109,34 +109,68 @@ public class TypingController {
             showResult();
         }
     }
-    
+
     private void showResult() {
         if (timeline != null) timeline.stop();
-        
+
         double minutes = timeInSeconds / 60.0;
         double wpm = minutes > 0 ? (correctChars / 5.0) / minutes : 0;
         double accuracy = totalChars > 0 ? (correctChars * 100.0) / totalChars : 100;
-        
+
         rootVBox.getChildren().clear();
-        
+
         VBox resultBox = new VBox(20);
         resultBox.setAlignment(Pos.CENTER);
-        
+
         Label wpmLabel = new Label(String.format("%.0f WPM", wpm));
         wpmLabel.setStyle("-fx-font-size: 48px; -fx-font-weight: bold;");
-        
+
         Label accLabel = new Label(String.format("Accuracy: %.1f%%", accuracy));
         accLabel.setStyle("-fx-font-size: 24px;");
-        
+
         Label timeLabel = new Label("Time: " + timeInSeconds + " seconds");
         timeLabel.setStyle("-fx-font-size: 18px;");
-        
-        Button doneBtn = new Button("Done");
-        doneBtn.setStyle("-fx-padding: 10 30; -fx-font-size: 16px;");
-        doneBtn.setOnAction(e -> logout());
-        
-        resultBox.getChildren().addAll(wpmLabel, accLabel, timeLabel, doneBtn);
+
+        Button retryBtn = new Button("Try Again");
+        retryBtn.setOnAction(e -> {
+            currentIndex = 0;
+            correctChars = 0;
+            totalChars = 0;
+            timeInSeconds = 0;
+
+            rootVBox.getChildren().clear();
+            rootVBox.getChildren().addAll(timerLabel, textFlow);
+            loadSentence();
+            startTimer();
+        });
+
+        Button backBtn = new Button("Back to Dashboard");
+        backBtn.setOnAction(e -> backToDashboard());
+        resultBox.getChildren().addAll(
+                wpmLabel,
+                accLabel,
+                timeLabel,
+                retryBtn,
+                backBtn
+        );
+
         rootVBox.getChildren().add(resultBox);
+    }
+
+    private void backToDashboard() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("dashboard-view.fxml"));
+            Scene scene = new Scene(loader.load(), 600, 500);
+
+            dashboardcontrol controller = loader.getController();
+            controller.setUsername(username);
+
+            Stage stage = (Stage) rootVBox.getScene().getWindow();
+            stage.setScene(scene);
+            stage.setTitle("Dashboard");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     
     private void logout() {
