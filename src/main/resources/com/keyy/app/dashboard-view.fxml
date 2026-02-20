@@ -39,7 +39,7 @@
             <Label text="Select an option from the menu to get started."
                    style="-fx-font-size: 14px;"/>
 
-            <Button fx:id="startGameBtnCenter" text="Start Game Now" style="-fx-font-size: 16px; -fx-padding: 14 40 14 40;"/>
+            <Button fx:id="startGameBtnCenter" text="Start Game Now" style="-fx-font-size: 16px; -fx-padding: 14 40 14 40;-fx-background-color: #9cf542;"/>
         </VBox>
     </center>
 

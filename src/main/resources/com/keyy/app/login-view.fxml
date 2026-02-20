@@ -22,8 +22,8 @@
 
         <Label fx:id="messageLabel" text="" wrapText="true"/>
 
-        <Button fx:id="loginBtn" text="Login" maxWidth="Infinity"/>
-        <Button fx:id="registerBtn" text="Register" maxWidth="Infinity"/>
+        <Button fx:id="loginBtn" text="Login" maxWidth="Infinity" style="-fx-background-color:#34eb55;"/>
+        <Button fx:id="registerBtn" text="Register" maxWidth="Infinity" style="-fx-background-color:#34ebe5"/>
     </VBox>
 
 </VBox>
