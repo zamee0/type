@@ -7,15 +7,33 @@
 <VBox spacing="0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.keyy.app.SettingsController">
 
     <!-- Header -->
-    <HBox alignment="CENTER_LEFT" spacing="16" style="-fx-padding: 16 24 16 24; -fx-border-color: transparent transparent #cccccc transparent; -fx-border-width: 0 0 1 0;">
-        <Button fx:id="backBtn" text="&lt; Back" style="-fx-background-color:#eb3434" />
+    <HBox alignment="CENTER_LEFT" spacing="16" style="-fx-padding: 16 24 16 24;                  -fx-border-color: transparent transparent #cccccc transparent;                  -fx-border-width: 0 0 1 0;                  -fx-background-color: #f9f9f9;">
+        <Button fx:id="backBtn" text="&lt; Back" />
         <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Settings" />
     </HBox>
 
     <!-- Body -->
-    <VBox alignment="CENTER" spacing="20" VBox.vgrow="ALWAYS">
+    <VBox spacing="30" VBox.vgrow="ALWAYS">
         <padding><Insets bottom="40" left="60" right="60" top="40" /></padding>
-        <Label style="-fx-font-size: 16px;" />
+
+        <!-- Section: Game Settings -->
+        <Label style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #888888;" text="Game Settings" />
+
+        <!-- Backspace toggle card -->
+        <VBox spacing="12" style="-fx-background-color: white;                      -fx-border-color: #e0e0e0;                      -fx-border-width: 1;                      -fx-border-radius: 10;                      -fx-background-radius: 10;                      -fx-padding: 20;">
+
+            <HBox alignment="CENTER_LEFT" spacing="20">
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label style="-fx-font-size: 15px; -fx-font-weight: bold;" text="Backspace Key" />
+                    <Label fx:id="backspaceStatusLabel" style="-fx-font-size: 13px; -fx-text-fill: #666666;" wrapText="true" />
+                </VBox>
+                <ToggleButton fx:id="backspaceToggle" prefHeight="32.0" prefWidth="131.0" style="-fx-font-size: 13px; -fx-padding: 8 18 8 18;" text="Disable Backspace" />
+            </HBox>
+
+        </VBox>
+
+        <Label style="-fx-font-size: 12px; -fx-text-fill: #aaaaaa;" text="More settings coming soon (theme, difficulty, etc.)" />
+
     </VBox>
 
 </VBox>
