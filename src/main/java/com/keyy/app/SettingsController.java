@@ -6,58 +6,68 @@ import javafx.stage.Stage;
 
 public class SettingsController {
 
-    // ─── Game Settings (static so other classes can access) ───────────────────
+    // ── Game Settings (static, accessible from anywhere) ──────────────────────
     private static boolean backspaceEnabled = true;
-
-    public static boolean isBackspaceEnabled() {
-        return backspaceEnabled;
-    }
-
-    public static void setBackspaceEnabled(boolean enabled) {
-        backspaceEnabled = enabled;
-    }
+    public static boolean isBackspaceEnabled() { return backspaceEnabled; }
+    public static void setBackspaceEnabled(boolean v) { backspaceEnabled = v; }
     // ──────────────────────────────────────────────────────────────────────────
 
     @FXML private Button backBtn;
+    @FXML private ToggleButton darkModeToggle;
+    @FXML private Label darkModeLabel;
     @FXML private ToggleButton backspaceToggle;
-    @FXML private Label backspaceStatusLabel;
+    @FXML private Label backspaceLabel;
 
     private String username;
 
     @FXML
     public void initialize() {
+        // Reflect current state
+        darkModeToggle.setSelected(ThemeManager.isDarkMode());
         backspaceToggle.setSelected(backspaceEnabled);
-        updateLabel();
+        updateDarkLabel();
+        updateBackspaceLabel();
+
+        darkModeToggle.setOnAction(e -> {
+            ThemeManager.setDarkMode(darkModeToggle.isSelected());
+            updateDarkLabel();
+        });
 
         backspaceToggle.setOnAction(e -> {
             backspaceEnabled = backspaceToggle.isSelected();
-            updateLabel();
+            updateBackspaceLabel();
         });
 
         backBtn.setOnAction(e -> goBack());
     }
 
-    private void updateLabel() {
-        if (backspaceEnabled) {
-            backspaceStatusLabel.setText("Backspace is ON — you can correct mistakes during the game.");
-            backspaceToggle.setText("Disable Backspace");
+    private void updateDarkLabel() {
+        if (ThemeManager.isDarkMode()) {
+            darkModeLabel.setText("Dark Mode is ON");
+            darkModeToggle.setText("Switch to Light");
         } else {
-            backspaceStatusLabel.setText("Backspace is OFF — no corrections allowed during the game.");
-            backspaceToggle.setText("Enable Backspace");
+            darkModeLabel.setText("Light Mode is ON");
+            darkModeToggle.setText("Switch to Dark");
         }
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    private void updateBackspaceLabel() {
+        if (backspaceEnabled) {
+            backspaceLabel.setText("Backspace is ON — you can correct mistakes in-game.");
+            backspaceToggle.setText("Disable");
+        } else {
+            backspaceLabel.setText("Backspace is OFF — no corrections allowed in-game.");
+            backspaceToggle.setText("Enable");
+        }
     }
+
+    public void setUsername(String username) { this.username = username; }
 
     private void goBack() {
         try {
             Stage stage = (Stage) backBtn.getScene().getWindow();
-            dashboardcontrol ctrl = SceneHelper.loadScene(stage, "dashboard-view.fxml", "KEYY - Dashboard");
+            dashboardcontrol ctrl = SceneHelper.loadScene(stage, "dashboard-view.fxml", "KEYY");
             ctrl.setUsername(username);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        } catch (Exception ex) { ex.printStackTrace(); }
     }
 }

@@ -8,183 +8,248 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import java.util.ArrayList;
+import java.util.*;
 
 public class TypingController {
 
+    public enum Difficulty { EASY, NORMAL, HARD }
+
+    private static String[] bankFor(Difficulty d) {
+        return switch (d) {
+            case EASY -> WordBank.EASY;
+            case HARD -> WordBank.HARD;
+            default   -> WordBank.NORMAL;
+        };
+    }
+
+    // ── FXML ───────────────────────────────────────────────────────────────────
     @FXML private VBox rootVBox;
     @FXML private VBox typingPane;
     @FXML private VBox resultPane;
     @FXML private TextFlow textFlow;
     @FXML private Label timerLabel;
+    @FXML private Label difficultyLabel;
+    @FXML private Label wpmLiveLabel;
     @FXML private Label wpmResultLabel;
     @FXML private Label accResultLabel;
     @FXML private Label timeResultLabel;
+    @FXML private Label wordsResultLabel;
     @FXML private Button retryBtn;
     @FXML private Button dashboardBtn;
     @FXML private Button closeBtn;
 
-    private static final String[] SENTENCES = {
-            "the quick brown fox jumps over the lazy dog",
-            "practice makes perfect in everything you do",
-            "typing fast requires patience and dedication",
-            "always strive to improve your skills daily",
-            "good communication is the key to success",
-            "every moment is a fresh beginning for you",
-            "success is the sum of small efforts repeated daily",
-            "the only way to do great work is to love it",
-            "stay focused and never give up on your dreams",
-            "hard work beats talent when talent does not work hard"
-    };
-
-    private String currentSentence;
-    private int currentIndex = 0;
-
-    // hadError[i] = true if user ever typed wrong at position i
-    // This is PERMANENT — backspace does not clear it
-    private boolean[] hadError;
-
-    // For visual undo on backspace — tracks what was typed at each position
-    private ArrayList<Boolean> typedHistory = new ArrayList<>();
-
-    private int timeInSeconds = 0;
-    private Timeline timeline;
+    // ── State ──────────────────────────────────────────────────────────────────
     private String username;
+    private Difficulty difficulty = Difficulty.NORMAL;
+    private int totalSeconds = 60;
+    private int timeLeft;
 
+    private final List<String> wordQueue         = new ArrayList<>();
+    private int currentCharIndex                 = 0;
+    private int wordsCompleted                   = 0;
+    private final Map<Integer, Boolean> hadError = new HashMap<>();
+    private final List<Boolean> typedHistory     = new ArrayList<>();
+
+    private Timeline countdown;
+    private Timeline liveWpmTimer;
+    private final Random rand = new Random();
+
+    // ── Initialize ─────────────────────────────────────────────────────────────
     @FXML
     public void initialize() {
-        loadSentence();
-
         resultPane.setVisible(false);
         resultPane.setManaged(false);
-
-        rootVBox.sceneProperty().addListener((obs, oldScene, newScene) -> {
-            if (newScene != null) {
-                newScene.setOnKeyTyped(this::handleKeyPress);
-            }
-        });
-
-        retryBtn.setOnAction(e -> resetGame());
+        retryBtn.setOnAction(e -> restart());
         dashboardBtn.setOnAction(e -> goToDashboard());
         closeBtn.setOnAction(e -> ((Stage) rootVBox.getScene().getWindow()).close());
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-        startTimer();
+    // Called by GameSetupController after scene is loaded
+    public void setup(String username, Difficulty difficulty, int seconds) {
+        this.username     = username;
+        this.difficulty   = difficulty;
+        this.totalSeconds = seconds;
+        this.timeLeft     = seconds;
+
+        difficultyLabel.setText(difficulty.name());
+        timerLabel.setText(String.valueOf(timeLeft));
+
+        buildWordQueue(50);
+        renderTextFlow();
+        startCountdown();
+        startLiveWpm();
+
+        // Attach keyboard after scene graph is fully settled
+        javafx.application.Platform.runLater(() -> {
+            if (rootVBox.getScene() != null)
+                rootVBox.getScene().setOnKeyTyped(this::handleKeyPress);
+        });
     }
 
-    private void loadSentence() {
-        java.util.Random rand = new java.util.Random();
-        currentSentence = SENTENCES[rand.nextInt(SENTENCES.length)];
-        currentIndex = 0;
-        hadError = new boolean[currentSentence.length()];
-        typedHistory.clear();
+    // ── Word Queue ─────────────────────────────────────────────────────────────
+    private void buildWordQueue(int count) {
+        wordQueue.clear();
+        String[] bank = bankFor(difficulty);
+        for (int i = 0; i < count; i++)
+            wordQueue.add(bank[rand.nextInt(bank.length)]);
+    }
 
+    private void appendWords(int count) {
+        String[] bank = bankFor(difficulty);
+        for (int i = 0; i < count; i++)
+            wordQueue.add(bank[rand.nextInt(bank.length)]);
+    }
+
+    // ── Render ─────────────────────────────────────────────────────────────────
+    private void renderTextFlow() {
         textFlow.getChildren().clear();
-        for (int i = 0; i < currentSentence.length(); i++) {
-            Text t = new Text(String.valueOf(currentSentence.charAt(i)));
-            t.setStyle("-fx-font-size: 22px;");
-            if (i == 0) t.setStyle("-fx-font-size: 22px; -fx-underline: true;");
+        hadError.clear();
+        typedHistory.clear();
+        currentCharIndex = 0;
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < wordQueue.size(); i++) {
+            sb.append(wordQueue.get(i));
+            if (i < wordQueue.size() - 1) sb.append(" ");
+        }
+
+        for (int i = 0; i < sb.length(); i++) {
+            Text t = new Text(String.valueOf(sb.charAt(i)));
+            t.getStyleClass().add(i == 0 ? "typing-cursor" : "typing-char");
             textFlow.getChildren().add(t);
         }
     }
 
-    private void startTimer() {
-        if (timeline != null) timeline.stop();
-        timeInSeconds = 0;
-        timerLabel.setText("0");
-        timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-            timeInSeconds++;
-            timerLabel.setText(String.valueOf(timeInSeconds));
-        }));
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
+    private String fullText() {
+        StringBuilder sb = new StringBuilder();
+        textFlow.getChildren().forEach(n -> sb.append(((Text) n).getText()));
+        return sb.toString();
     }
 
+    // ── Timers ─────────────────────────────────────────────────────────────────
+    private void startCountdown() {
+        if (countdown != null) countdown.stop();
+        countdown = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            timeLeft--;
+            timerLabel.setText(String.valueOf(timeLeft));
+            if (timeLeft <= 10)
+                timerLabel.setStyle(
+                        "-fx-font-size:52px;-fx-font-weight:900;" +
+                                "-fx-text-fill:#FF5E57;"
+                );
+            if (timeLeft <= 0) showResult();
+        }));
+        countdown.setCycleCount(Timeline.INDEFINITE);
+        countdown.play();
+    }
+
+    private void startLiveWpm() {
+        if (liveWpmTimer != null) liveWpmTimer.stop();
+        liveWpmTimer = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+            int elapsed = totalSeconds - timeLeft;
+            if (elapsed > 0)
+                wpmLiveLabel.setText(
+                        String.format("%.0f WPM", wordsCompleted / (elapsed / 60.0))
+                );
+        }));
+        liveWpmTimer.setCycleCount(Timeline.INDEFINITE);
+        liveWpmTimer.play();
+    }
+
+    // ── Key Handling ───────────────────────────────────────────────────────────
     private void handleKeyPress(KeyEvent event) {
+        if (timeLeft <= 0) return;
         String typed = event.getCharacter();
 
-        // --- BACKSPACE ---
         if (typed.equals("\b")) {
-            if (!SettingsController.isBackspaceEnabled()) return; // disabled in settings
-
-            if (currentIndex > 0) {
-                // Remove cursor from current position
-                if (currentIndex < currentSentence.length()) {
-                    Text curr = (Text) textFlow.getChildren().get(currentIndex);
-                    curr.setStyle("-fx-font-size: 22px;");
-                }
-                currentIndex--;
-                typedHistory.remove(typedHistory.size() - 1);
-
-                // Reset char visually to neutral + cursor
-                // hadError[currentIndex] is NOT reset — mistake is permanent
-                Text prev = (Text) textFlow.getChildren().get(currentIndex);
-                prev.setStyle("-fx-font-size: 22px; -fx-underline: true;");
-            }
+            if (SettingsController.isBackspaceEnabled()) handleBackspace();
             return;
         }
+        if (typed.isEmpty() || typed.charAt(0) < 32) return;
 
-        if (currentIndex >= currentSentence.length()) return;
+        String full = fullText();
+        if (currentCharIndex >= full.length()) return;
 
-        boolean isCorrect = typed.charAt(0) == currentSentence.charAt(currentIndex);
+        boolean correct = typed.charAt(0) == full.charAt(currentCharIndex);
+        if (!correct && !hadError.containsKey(currentCharIndex))
+            hadError.put(currentCharIndex, true);
 
-        // If wrong at this position for the first time, mark it permanently
-        if (!isCorrect && !hadError[currentIndex]) {
-            hadError[currentIndex] = true;
+        typedHistory.add(correct);
+
+        Text t = (Text) textFlow.getChildren().get(currentCharIndex);
+        t.getStyleClass().clear();
+        t.getStyleClass().add(correct
+                ? (hadError.containsKey(currentCharIndex) ? "typing-corrected" : "typing-correct")
+                : "typing-wrong");
+
+        currentCharIndex++;
+
+        // Word completed when a space is typed correctly
+        if (correct && currentCharIndex > 0
+                && full.charAt(currentCharIndex - 1) == ' ') {
+            wordsCompleted++;
+            if (full.length() - currentCharIndex < 150)
+                appendWordsToFlow(20);
         }
 
-        typedHistory.add(isCorrect);
-
-        Text t = (Text) textFlow.getChildren().get(currentIndex);
-        if (isCorrect) {
-            if (!hadError[currentIndex]) {
-                // Clean correct — green
-                t.setStyle("-fx-font-size: 22px; -fx-fill: green;");
-            } else {
-                // Corrected after a mistake — orange (shows it cost accuracy)
-                t.setStyle("-fx-font-size: 22px; -fx-fill: orange;");
-            }
-        } else {
-            t.setStyle("-fx-font-size: 22px; -fx-fill: red;");
-        }
-
-        currentIndex++;
-
-        if (currentIndex < currentSentence.length()) {
-            Text next = (Text) textFlow.getChildren().get(currentIndex);
-            next.setStyle(next.getStyle() + " -fx-underline: true;");
-        } else {
-            showResult();
+        // Move cursor to next char
+        if (currentCharIndex < textFlow.getChildren().size()) {
+            Text next = (Text) textFlow.getChildren().get(currentCharIndex);
+            next.getStyleClass().clear();
+            next.getStyleClass().add("typing-cursor");
         }
     }
 
+    private void handleBackspace() {
+        if (currentCharIndex <= 0) return;
+
+        if (currentCharIndex < textFlow.getChildren().size()) {
+            Text curr = (Text) textFlow.getChildren().get(currentCharIndex);
+            curr.getStyleClass().clear();
+            curr.getStyleClass().add("typing-char");
+        }
+        currentCharIndex--;
+        if (!typedHistory.isEmpty()) typedHistory.remove(typedHistory.size() - 1);
+
+        Text prev = (Text) textFlow.getChildren().get(currentCharIndex);
+        prev.getStyleClass().clear();
+        prev.getStyleClass().add("typing-cursor");
+        // hadError stays — mistake is permanent
+    }
+
+    private void appendWordsToFlow(int count) {
+        appendWords(count);
+        int start = wordQueue.size() - count;
+        StringBuilder sb = new StringBuilder();
+        for (int i = start; i < wordQueue.size(); i++)
+            sb.append(" ").append(wordQueue.get(i));
+
+        for (char c : sb.toString().toCharArray()) {
+            Text t = new Text(String.valueOf(c));
+            t.getStyleClass().add("typing-char");
+            textFlow.getChildren().add(t);
+        }
+    }
+
+    // ── Result ─────────────────────────────────────────────────────────────────
     private void showResult() {
-        if (timeline != null) timeline.stop();
+        if (countdown != null) countdown.stop();
+        if (liveWpmTimer != null) liveWpmTimer.stop();
 
-        // Count positions with zero errors = perfectly typed chars
-        int cleanChars = 0;
-        for (boolean err : hadError) {
-            if (!err) cleanChars++;
-        }
+        long clean = 0;
+        for (int i = 0; i < currentCharIndex; i++)
+            if (!hadError.containsKey(i)) clean++;
 
-        // Accuracy = clean positions / total positions
-        double accuracy = (currentSentence.length() > 0)
-                ? (cleanChars * 100.0) / currentSentence.length()
-                : 100;
+        double accuracy = currentCharIndex > 0
+                ? (clean * 100.0) / currentCharIndex : 100;
+        double wpm = wordsCompleted / (totalSeconds / 60.0);
 
-        // WPM = based on sentence length (standard: chars/5 = words)
-        double minutes = timeInSeconds / 60.0;
-        double wpm = minutes > 0 ? (currentSentence.length() / 5.0) / minutes : 0;
+        if (username != null) UserManager.saveResult(username, wpm, accuracy, totalSeconds);
 
-        if (username != null) {
-            UserManager.saveResult(username, wpm, accuracy, timeInSeconds);
-        }
-
-        wpmResultLabel.setText(String.format("%.0f WPM", wpm));
-        accResultLabel.setText(String.format("%.1f%% Accuracy", accuracy));
-        timeResultLabel.setText("Time: " + timeInSeconds + "s");
+        wpmResultLabel.setText(String.format("%.0f", wpm));
+        accResultLabel.setText(String.format("%.1f%%", accuracy));
+        timeResultLabel.setText(totalSeconds + "s");
+        wordsResultLabel.setText(String.valueOf(wordsCompleted));
 
         typingPane.setVisible(false);
         typingPane.setManaged(false);
@@ -192,26 +257,40 @@ public class TypingController {
         resultPane.setManaged(true);
     }
 
-    private void resetGame() {
-        currentIndex = 0;
+    // ── Restart ────────────────────────────────────────────────────────────────
+    private void restart() {
+        wordQueue.clear();
+        hadError.clear();
         typedHistory.clear();
+        wordsCompleted   = 0;
+        currentCharIndex = 0;
+        timeLeft         = totalSeconds;
+        timerLabel.setStyle("");
 
         typingPane.setVisible(true);
         typingPane.setManaged(true);
         resultPane.setVisible(false);
         resultPane.setManaged(false);
 
-        loadSentence();
-        startTimer();
+        buildWordQueue(50);
+        renderTextFlow();
+        startCountdown();
+        startLiveWpm();
+
+        javafx.application.Platform.runLater(() -> {
+            if (rootVBox.getScene() != null)
+                rootVBox.getScene().setOnKeyTyped(this::handleKeyPress);
+        });
     }
 
     private void goToDashboard() {
         try {
+            if (countdown != null) countdown.stop();
+            if (liveWpmTimer != null) liveWpmTimer.stop();
             Stage stage = (Stage) rootVBox.getScene().getWindow();
-            dashboardcontrol ctrl = SceneHelper.loadScene(stage, "dashboard-view.fxml", "KEYY - Dashboard");
+            dashboardcontrol ctrl = SceneHelper.loadScene(
+                    stage, "dashboard-view.fxml", "KEYY");
             ctrl.setUsername(username);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        } catch (Exception ex) { ex.printStackTrace(); }
     }
 }

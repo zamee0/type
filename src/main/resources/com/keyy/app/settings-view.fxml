@@ -1,39 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
 
-<VBox spacing="0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.keyy.app.SettingsController">
+<VBox styleClass="root-pane" spacing="0"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.keyy.app.SettingsController">
 
-    <!-- Header -->
-    <HBox alignment="CENTER_LEFT" spacing="16" style="-fx-padding: 16 24 16 24;                  -fx-border-color: transparent transparent #cccccc transparent;                  -fx-border-width: 0 0 1 0;                  -fx-background-color: #f9f9f9;">
-        <Button fx:id="backBtn" text="&lt; Back" />
-        <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Settings" />
+    <HBox styleClass="page-header" alignment="CENTER_LEFT" spacing="16">
+        <padding><Insets top="18" right="28" bottom="18" left="28"/></padding>
+        <Button fx:id="backBtn" text="← Back" styleClass="btn-ghost"/>
+        <Label text="⚙️ Settings" styleClass="page-title"/>
     </HBox>
 
-    <!-- Body -->
-    <VBox spacing="30" VBox.vgrow="ALWAYS">
-        <padding><Insets bottom="40" left="60" right="60" top="40" /></padding>
+    <VBox spacing="28" VBox.vgrow="ALWAYS">
+        <padding><Insets top="36" right="60" bottom="36" left="60"/></padding>
 
-        <!-- Section: Game Settings -->
-        <Label style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #888888;" text="Game Settings" />
+        <Label text="APPEARANCE" styleClass="section-label"/>
 
-        <!-- Backspace toggle card -->
-        <VBox spacing="12" style="-fx-background-color: white;                      -fx-border-color: #e0e0e0;                      -fx-border-width: 1;                      -fx-border-radius: 10;                      -fx-background-radius: 10;                      -fx-padding: 20;">
-
-            <HBox alignment="CENTER_LEFT" spacing="20">
+        <VBox styleClass="settings-card" spacing="0">
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="settings-row">
+                <padding><Insets top="20" right="24" bottom="20" left="24"/></padding>
                 <VBox spacing="4" HBox.hgrow="ALWAYS">
-                    <Label style="-fx-font-size: 15px; -fx-font-weight: bold;" text="Backspace Key" />
-                    <Label fx:id="backspaceStatusLabel" style="-fx-font-size: 13px; -fx-text-fill: #666666;" wrapText="true" />
+                    <Label text="Dark Mode" styleClass="settings-label"/>
+                    <Label fx:id="darkModeLabel" text="Light Mode is ON" styleClass="settings-value"/>
                 </VBox>
-                <ToggleButton fx:id="backspaceToggle" prefHeight="32.0" prefWidth="131.0" style="-fx-font-size: 13px; -fx-padding: 8 18 8 18;" text="Disable Backspace" />
+                <ToggleButton fx:id="darkModeToggle" text="Switch to Dark" styleClass="toggle-btn"/>
             </HBox>
-
         </VBox>
 
-        <Label style="-fx-font-size: 12px; -fx-text-fill: #aaaaaa;" text="More settings coming soon (theme, difficulty, etc.)" />
+        <Label text="GAMEPLAY" styleClass="section-label"/>
 
+        <VBox styleClass="settings-card" spacing="0">
+            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="settings-row">
+                <padding><Insets top="20" right="24" bottom="20" left="24"/></padding>
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="Backspace Key" styleClass="settings-label"/>
+                    <Label fx:id="backspaceLabel" text="Backspace is ON" styleClass="settings-value" wrapText="true"/>
+                </VBox>
+                <ToggleButton fx:id="backspaceToggle" text="Disable" styleClass="toggle-btn"/>
+            </HBox>
+        </VBox>
+
+        <Label text="All settings take effect immediately." styleClass="settings-hint"/>
     </VBox>
-
 </VBox>

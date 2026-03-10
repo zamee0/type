@@ -5,46 +5,82 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="rootVBox" alignment="CENTER" spacing="0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.keyy.app.TypingController">
+<VBox fx:id="rootVBox" spacing="0" styleClass="root-pane" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.keyy.app.TypingController">
 
-    <!-- Typing Pane -->
-    <VBox fx:id="typingPane" alignment="CENTER" spacing="24" VBox.vgrow="ALWAYS">
-        <padding><Insets bottom="60" left="80" right="80" top="60" /></padding>
+    <!-- ═══ TYPING PANE ═══════════════════════════════════════════ -->
+    <VBox fx:id="typingPane" spacing="0" VBox.vgrow="ALWAYS">
 
-        <Label style="-fx-font-size: 28px; -fx-font-weight: bold;" text="KEYY" />
+        <!-- Top bar: Timer | Difficulty | Live WPM -->
+        <HBox alignment="CENTER" spacing="0" styleClass="page-header">
+            <padding><Insets bottom="20" left="40" right="40" top="20" /></padding>
 
-        <HBox alignment="CENTER" spacing="8">
-            <Label style="-fx-font-size: 16px;" text="Timer:" />
-            <Label fx:id="timerLabel" style="-fx-font-size: 32px; -fx-font-weight: bold;" text="0" />
-            <Label style="-fx-font-size: 16px;" text="s" />
+            <!-- Timer -->
+            <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                <Label fx:id="timerLabel" styleClass="timer-big" text="60" />
+                <Label styleClass="timer-sub" text="SECONDS" />
+            </VBox>
+
+            <!-- Difficulty -->
+            <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                <Label fx:id="difficultyLabel" styleClass="diff-label" text="NORMAL" />
+                <Label styleClass="timer-sub" text="DIFFICULTY" />
+            </VBox>
+
+            <!-- Live WPM -->
+            <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                <Label fx:id="wpmLiveLabel" styleClass="live-wpm" text="0 WPM" />
+                <Label styleClass="timer-sub" text="LIVE WPM" />
+            </VBox>
         </HBox>
 
-        <Label style="-fx-font-size: 14px;" text="Type the text below:" />
+        <!-- Word display area -->
+        <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
+            <padding><Insets bottom="50" left="80" right="80" top="50" /></padding>
 
-        <VBox style="-fx-border-color: #cccccc; -fx-border-width: 1; -fx-border-radius: 8; -fx-background-color: white; -fx-background-radius: 8;">
-            <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
-            <TextFlow fx:id="textFlow" />
+            <VBox styleClass="typing-box">
+                <padding><Insets bottom="28" left="28" right="28" top="28" /></padding>
+                <ScrollPane fitToWidth="true" maxHeight="160" minHeight="160" prefHeight="160" styleClass="typing-scroll">
+                    <TextFlow fx:id="textFlow" lineSpacing="8" styleClass="typing-flow" />
+                </ScrollPane>
+            </VBox>
+
+            <Label styleClass="typing-hint" text="Start typing to begin — timer starts automatically">
+                <VBox.margin><Insets top="14" /></VBox.margin>
+            </Label>
         </VBox>
-
-        <Label style="-fx-font-size: 12px;" />
     </VBox>
 
-    <!-- Result Pane (hidden initially) -->
-    <VBox fx:id="resultPane" alignment="CENTER" spacing="24" VBox.vgrow="ALWAYS">
+    <!-- ═══ RESULT PANE ════════════════════════════════════════════ -->
+    <VBox fx:id="resultPane" alignment="CENTER" spacing="36" VBox.vgrow="ALWAYS">
         <padding><Insets bottom="60" left="80" right="80" top="60" /></padding>
 
-        <Label style="-fx-font-size: 28px; -fx-font-weight: bold;" text="Test Complete!" />
+        <Label styleClass="result-title" text="Test Complete! " />
 
-        <VBox alignment="CENTER" spacing="10">
-            <Label fx:id="wpmResultLabel" style="-fx-font-size: 36px; -fx-font-weight: bold;" text="0 WPM" />
-            <Label fx:id="accResultLabel" style="-fx-font-size: 22px;" text="0% Accuracy" />
-            <Label fx:id="timeResultLabel" style="-fx-font-size: 18px;" text="Time: 0s" />
-        </VBox>
-
+        <!-- 4 stat cards -->
         <HBox alignment="CENTER" spacing="16">
-            <Button fx:id="retryBtn" text="Retry" />
-            <Button fx:id="dashboardBtn" text="Dashboard" />
-            <Button fx:id="closeBtn" text="Close" />
+            <VBox alignment="CENTER" spacing="6" styleClass="result-card">
+                <Label fx:id="wpmResultLabel" styleClass="result-big" text="0" />
+                <Label styleClass="result-label" text="WPM" />
+            </VBox>
+            <VBox alignment="CENTER" spacing="6" styleClass="result-card">
+                <Label fx:id="accResultLabel" style="-fx-text-fill: -fx-green;" styleClass="result-big" text="0%" />
+                <Label styleClass="result-label" text="ACCURACY" />
+            </VBox>
+            <VBox alignment="CENTER" spacing="6" styleClass="result-card">
+                <Label fx:id="wordsResultLabel" style="-fx-text-fill: -fx-orange;" styleClass="result-big" text="0" />
+                <Label styleClass="result-label" text="WORDS" />
+            </VBox>
+            <VBox alignment="CENTER" spacing="6" styleClass="result-card">
+                <Label fx:id="timeResultLabel" style="-fx-text-fill: -fx-text-2;" styleClass="result-big" text="0s" />
+                <Label styleClass="result-label" text="TIME" />
+            </VBox>
+        </HBox>
+
+        <!-- Buttons -->
+        <HBox alignment="CENTER" spacing="14">
+            <Button fx:id="retryBtn" styleClass="btn-primary" text="↺  Retry" />
+            <Button fx:id="dashboardBtn" styleClass="btn-secondary" text="⌂  Dashboard" />
+            <Button fx:id="closeBtn" styleClass="btn-danger" text="✕  Close" />
         </HBox>
     </VBox>
 

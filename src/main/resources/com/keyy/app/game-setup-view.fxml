@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<VBox styleClass="root-pane" spacing="0"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.keyy.app.GameSetupController">
+
+    <!-- Header -->
+    <HBox styleClass="page-header" alignment="CENTER_LEFT" spacing="16">
+        <padding><Insets top="18" right="28" bottom="18" left="28"/></padding>
+        <Button fx:id="backBtn" text="← Back" styleClass="btn-ghost"/>
+        <Label text="New Game" styleClass="page-title"/>
+    </HBox>
+
+    <!-- Body -->
+    <VBox alignment="CENTER" spacing="48" VBox.vgrow="ALWAYS">
+        <padding><Insets top="50" right="100" bottom="50" left="100"/></padding>
+
+        <!-- Difficulty -->
+        <VBox spacing="16" alignment="CENTER">
+            <Label text="DIFFICULTY" styleClass="setup-section-label"/>
+            <HBox spacing="16" alignment="CENTER">
+                <Button fx:id="easyBtn"   text="Easy"   styleClass="setup-btn" minWidth="120" prefHeight="70"/>
+                <Button fx:id="normalBtn" text="Normal" styleClass="setup-btn" minWidth="120" prefHeight="70"/>
+                <Button fx:id="hardBtn"   text="Hard"   styleClass="setup-btn" minWidth="120" prefHeight="70"/>
+            </HBox>
+            <HBox spacing="16" alignment="CENTER">
+                <Label text="Short common words"  styleClass="setup-hint" minWidth="120" style="-fx-alignment:CENTER;"/>
+                <Label text="Medium words"         styleClass="setup-hint" minWidth="120" style="-fx-alignment:CENTER;"/>
+                <Label text="Long complex words"   styleClass="setup-hint" minWidth="120" style="-fx-alignment:CENTER;"/>
+            </HBox>
+        </VBox>
+
+        <!-- Time -->
+        <VBox spacing="16" alignment="CENTER">
+            <Label text="TIME LIMIT" styleClass="setup-section-label"/>
+            <HBox spacing="12" alignment="CENTER">
+                <Button fx:id="time15"  text="15s"  styleClass="setup-btn" minWidth="90" prefHeight="54"/>
+                <Button fx:id="time30"  text="30s"  styleClass="setup-btn" minWidth="90" prefHeight="54"/>
+                <Button fx:id="time60"  text="60s"  styleClass="setup-btn" minWidth="90" prefHeight="54"/>
+                <Button fx:id="time120" text="120s" styleClass="setup-btn" minWidth="90" prefHeight="54"/>
+            </HBox>
+        </VBox>
+
+        <Button fx:id="startBtn" text="Start Game →" styleClass="btn-primary-large"/>
+
+    </VBox>
+</VBox>

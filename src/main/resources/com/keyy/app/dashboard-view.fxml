@@ -1,46 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.12"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.keyy.app.dashboardcontrol">
-
-    <!-- Left sidebar navigation -->
+<BorderPane styleClass="root-pane" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.keyy.app.dashboardcontrol">
     <left>
-        <VBox spacing="0" prefWidth="200" style="-fx-background-color: #2b2b2b;">
-            <padding><Insets top="30" bottom="30"/></padding>
-
-            <Label text="KEYY"
-                   style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: white; -fx-padding: 0 20 20 20;"/>
-
-            <Button fx:id="startGameBtn"   text="Start Game"   maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT; -fx-padding: 14 20 14 20; -fx-cursor: hand;"/>
-            <Button fx:id="profileBtn"     text="My Profile"   maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT; -fx-padding: 14 20 14 20; -fx-cursor: hand;"/>
-            <Button fx:id="localhostBtn"   text="Local Host"   maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT; -fx-padding: 14 20 14 20; -fx-cursor: hand;"/>
-            <Button fx:id="leaderboardBtn" text="Leaderboard"  maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT; -fx-padding: 14 20 14 20; -fx-cursor: hand;"/>
-            <Button fx:id="settingsBtn"    text="Settings"     maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT; -fx-padding: 14 20 14 20; -fx-cursor: hand;"/>
-
-            <Region VBox.vgrow="ALWAYS"/>
-
-            <Button fx:id="logoutBtn" text="Logout" maxWidth="Infinity"
-                    style="-fx-background-color: transparent; -fx-text-fill: #ff6b6b; -fx-font-size: 14px; -fx-alignment: CENTER_LEFT; -fx-padding: 14 20 14 20; -fx-cursor: hand;"/>
+        <VBox prefWidth="220" spacing="0" styleClass="sidebar">
+            <padding><Insets bottom="28" top="28" /></padding>
+            <Label styleClass="sidebar-logo" text="KEYY" />
+            <Region prefHeight="24" />
+            <Button fx:id="startGameBtn" maxWidth="Infinity" styleClass="nav-btn" text="  Start Game" />
+            <Button fx:id="profileBtn" maxWidth="Infinity" styleClass="nav-btn" text="  My Profile" />
+            <Button fx:id="statsBtn" maxWidth="Infinity" styleClass="nav-btn" text="  Stats" />
+            <Button fx:id="localhostBtn" maxWidth="Infinity" styleClass="nav-btn" text="  Local Host" />
+            <Button fx:id="leaderboardBtn" maxWidth="Infinity" styleClass="nav-btn" text="  Leaderboard" />
+            <Button fx:id="settingsBtn" maxWidth="Infinity" styleClass="nav-btn" text="  Settings" />
+            <Region VBox.vgrow="ALWAYS" />
+            <Button fx:id="logoutBtn" maxWidth="Infinity" styleClass="nav-btn-logout" text="  Logout" />
         </VBox>
     </left>
-
-    <!-- Main content area -->
     <center>
-        <VBox alignment="CENTER" spacing="20">
-            <padding><Insets top="60" right="60" bottom="60" left="60"/></padding>
-
-            <Label fx:id="welcomeLabel" text="Welcome!"
-                   style="-fx-font-size: 30px; -fx-font-weight: bold;"/>
-
-            <Label text="Select an option from the menu to get started."
-                   style="-fx-font-size: 14px;"/>
-
-            <Button fx:id="startGameBtnCenter" text="Start Game Now" style="-fx-font-size: 16px; -fx-padding: 14 40 14 40;-fx-background-color: #9cf542;"/>
+        <VBox alignment="CENTER" spacing="32" styleClass="dash-main">
+            <padding><Insets bottom="60" left="70" right="70" top="60" /></padding>
+            <VBox spacing="8">
+                <Label fx:id="welcomeLabel" styleClass="welcome-title" text="Welcome back!" />
+                <Label styleClass="welcome-sub" />
+            </VBox>
+            <Button fx:id="startGameBtnCenter" styleClass="btn-primary-large" text="Start Typing Now" />
         </VBox>
     </center>
-
 </BorderPane>

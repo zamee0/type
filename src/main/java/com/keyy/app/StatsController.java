@@ -1,13 +1,17 @@
 package com.keyy.app;
+
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-public class LocalhostController {
+public class StatsController {
+
     @FXML private Button backBtn;
+
     private String username;
 
-    @FXML public void initialize() {
+    @FXML
+    public void initialize() {
         backBtn.setOnAction(e -> {
             try {
                 Stage stage = (Stage) backBtn.getScene().getWindow();
@@ -16,5 +20,8 @@ public class LocalhostController {
             } catch (Exception ex) { ex.printStackTrace(); }
         });
     }
-    public void setUsername(String u) { this.username = u; }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

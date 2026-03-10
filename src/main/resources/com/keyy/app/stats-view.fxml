@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.*?>
 
 <VBox styleClass="root-pane" spacing="0"
       xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.keyy.app.LocalhostController">
+      fx:controller="com.keyy.app.StatsController">
+
     <HBox styleClass="page-header" alignment="CENTER_LEFT" spacing="16">
         <padding><Insets top="18" right="28" bottom="18" left="28"/></padding>
         <Button fx:id="backBtn" text="← Back" styleClass="btn-ghost"/>
-        <Label text="🌐 Local Host" styleClass="page-title"/>
+        <Label text="Stats" styleClass="page-title"/>
     </HBox>
+
     <VBox VBox.vgrow="ALWAYS" alignment="CENTER">
-        <Label text="" styleClass="empty-label"/>
     </VBox>
+
 </VBox>

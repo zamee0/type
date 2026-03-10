@@ -5,7 +5,6 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 public class LoginController {
-
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private Label messageLabel;
@@ -21,40 +20,29 @@ public class LoginController {
     }
 
     private void handleLogin() {
-        String username = usernameField.getText().trim();
-        String password = passwordField.getText().trim();
-
-        if (username.isEmpty() || password.isEmpty()) {
-            messageLabel.setText("Please fill in all fields.");
-            return;
-        }
-
-        if (UserManager.loginUser(username, password)) {
+        String u = usernameField.getText().trim();
+        String p = passwordField.getText().trim();
+        if (u.isEmpty() || p.isEmpty()) { messageLabel.setText("Please fill in all fields."); return; }
+        if (UserManager.loginUser(u, p)) {
             try {
                 Stage stage = (Stage) loginBtn.getScene().getWindow();
-                dashboardcontrol ctrl = SceneHelper.loadScene(stage, "dashboard-view.fxml", "KEYY - Dashboard");
-                ctrl.setUsername(username);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        } else {
-            messageLabel.setText("Invalid username or password.");
-        }
+                dashboardcontrol ctrl = SceneHelper.loadScene(stage, "dashboard-view.fxml", "KEYY");
+                ctrl.setUsername(u);
+            } catch (Exception ex) { ex.printStackTrace(); }
+        } else { messageLabel.setText("Invalid username or password."); }
     }
 
     private void handleRegister() {
-        String username = usernameField.getText().trim();
-        String password = passwordField.getText().trim();
-
-        if (username.isEmpty() || password.isEmpty()) {
-            messageLabel.setText("Please fill in all fields.");
-            return;
-        }
-
-        if (UserManager.registerUser(username, password)) {
+        String u = usernameField.getText().trim();
+        String p = passwordField.getText().trim();
+        if (u.isEmpty() || p.isEmpty()) { messageLabel.setText("Please fill in all fields."); return; }
+        if (UserManager.registerUser(u, p)) {
             messageLabel.setText("Account created! You can now log in.");
+            messageLabel.getStyleClass().removeAll("msg-error");
+            messageLabel.getStyleClass().add("msg-success");
         } else {
             messageLabel.setText("Username already taken.");
+            messageLabel.getStyleClass().add("msg-error");
         }
     }
 }
