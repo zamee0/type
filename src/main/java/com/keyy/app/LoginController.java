@@ -10,6 +10,7 @@ public class LoginController {
     @FXML private Label messageLabel;
     @FXML private Button loginBtn;
     @FXML private Button registerBtn;
+    @FXML private Button themeBtn;
 
     @FXML
     public void initialize() {
@@ -17,6 +18,16 @@ public class LoginController {
         registerBtn.setOnAction(e -> handleRegister());
         passwordField.setOnAction(e -> handleLogin());
         usernameField.setOnAction(e -> passwordField.requestFocus());
+
+        updateThemeIcon();
+        themeBtn.setOnAction(e -> {
+            ThemeManager.setDarkMode(!ThemeManager.isDarkMode());
+            updateThemeIcon();
+        });
+    }
+
+    private void updateThemeIcon() {
+        themeBtn.setText(ThemeManager.isDarkMode() ? "☀" : "☽");
     }
 
     private void handleLogin() {

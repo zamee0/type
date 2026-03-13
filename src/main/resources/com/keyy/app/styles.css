@@ -61,6 +61,37 @@
 }
 
 /* ── LOGIN ─────────────────────────────────────────────────── */
+.login-left {
+    -fx-background-color: #141414;
+    -fx-min-height: 600;
+}
+.login-brand {
+    -fx-font-size: 52px;
+    -fx-font-weight: 900;
+    -fx-text-fill: white;
+    -fx-letter-spacing: 6;
+}
+.login-tagline {
+    -fx-font-size: 14px;
+    -fx-text-fill: #707070;
+}
+.login-copy {
+    -fx-font-size: 11px;
+    -fx-text-fill: #404040;
+}
+.login-right {
+    -fx-background-color: -fx-bg;
+    -fx-padding: 60 60 60 60;
+}
+.login-heading {
+    -fx-font-size: 26px;
+    -fx-font-weight: 800;
+    -fx-text-fill: -fx-text-1;
+}
+.login-sub {
+    -fx-font-size: 13px;
+    -fx-text-fill: -fx-text-2;
+}
 .brand-title {
     -fx-font-size: 56px;
     -fx-font-weight: 900;
@@ -87,9 +118,10 @@
     -fx-text-fill: -fx-text-1;
 }
 .field-label {
-    -fx-font-size: 12px;
-    -fx-font-weight: 600;
+    -fx-font-size: 11px;
+    -fx-font-weight: 700;
     -fx-text-fill: -fx-text-2;
+    -fx-letter-spacing: 1;
 }
 .input-field {
     -fx-background-color: -fx-surface2;
@@ -228,8 +260,10 @@
     -fx-border-width: 0 0 1 0;
 }
 .page-title  { -fx-font-size: 20px; -fx-font-weight: 700; -fx-text-fill: -fx-text-1; }
-.page-scroll { -fx-background-color: transparent; -fx-background: transparent; }
-.page-scroll > .viewport { -fx-background-color: transparent; }
+.page-scroll { -fx-background-color: -fx-bg; -fx-background: -fx-bg; }
+.page-scroll > .viewport { -fx-background-color: -fx-bg; }
+.light-mode .page-scroll > .viewport { -fx-background-color: #F0EFEC; }
+.dark-mode .page-scroll > .viewport  { -fx-background-color: #1A1A1A; }
 .section-label { -fx-font-size: 11px; -fx-font-weight: 700; -fx-text-fill: -fx-text-3; -fx-letter-spacing: 1; }
 .empty-label   { -fx-font-size: 14px; -fx-text-fill: -fx-text-3; -fx-padding: 20 0 20 0; }
 
@@ -355,12 +389,16 @@
 .stat-card-label   { -fx-font-size: 10px; -fx-font-weight: 700; -fx-text-fill: -fx-text-3; -fx-letter-spacing: 1; }
 
 .history-card {
-    -fx-background-color: -fx-surface;
+    -fx-background-color: #FFFFFF;
     -fx-background-radius: 10;
-    -fx-border-color: -fx-border;
+    -fx-border-color: #E0DDD8;
     -fx-border-width: 1;
     -fx-border-radius: 10;
     -fx-padding: 14 18 14 18;
+}
+.dark-mode .history-card {
+    -fx-background-color: #242424;
+    -fx-border-color: #3A3A3A;
 }
 .history-rank      { -fx-font-size: 13px; -fx-font-weight: 700; -fx-text-fill: -fx-text-3; }
 .history-wpm       { -fx-font-size: 18px; -fx-font-weight: 800; -fx-text-fill: -fx-text-1; }
@@ -389,13 +427,18 @@
 
 /* ── SETTINGS ───────────────────────────────────────────────── */
 .settings-card {
-    -fx-background-color: -fx-surface;
+    -fx-background-color: #FFFFFF;
     -fx-background-radius: 12;
-    -fx-border-color: -fx-border;
+    -fx-border-color: #E0DDD8;
     -fx-border-width: 1;
     -fx-border-radius: 12;
 }
-.settings-row    { -fx-background-color: transparent; }
+.dark-mode .settings-card {
+    -fx-background-color: #242424;
+    -fx-border-color: #3A3A3A;
+}
+.settings-row { -fx-background-color: transparent; }
+.settings-row > .vbox { -fx-background-color: transparent; }
 .settings-label  { -fx-font-size: 15px; -fx-font-weight: 600; -fx-text-fill: -fx-text-1; }
 .settings-value  { -fx-font-size: 13px; -fx-text-fill: -fx-text-2; }
 .settings-hint   { -fx-font-size: 12px; -fx-text-fill: -fx-text-3; }
@@ -425,3 +468,40 @@
 .scroll-bar:vertical .track      { -fx-background-color: transparent; }
 .scroll-bar .increment-button,
 .scroll-bar .decrement-button    { -fx-background-color: transparent; -fx-pref-height: 0; }
+
+/* ── CHARTS ─────────────────────────────────────────────────── */
+.chart { -fx-background-color: transparent; }
+.chart-plot-background { -fx-background-color: transparent; }
+.chart-content { -fx-padding: 10; }
+
+.dark-mode .chart-plot-background { -fx-background-color: #1E1E1E; }
+.dark-mode .chart { -fx-background-color: transparent; }
+
+.axis {
+    -fx-tick-label-fill: -fx-text-2;
+    -fx-tick-mark-stroke: -fx-border;
+}
+.dark-mode .axis { -fx-tick-label-fill: #B0ABA4; }
+.dark-mode .axis-label { -fx-text-fill: #B0ABA4; }
+
+.chart-vertical-grid-lines  { -fx-stroke: -fx-border; }
+.chart-horizontal-grid-lines { -fx-stroke: -fx-border; }
+.dark-mode .chart-vertical-grid-lines   { -fx-stroke: #2E2E2E; }
+.dark-mode .chart-horizontal-grid-lines { -fx-stroke: #2E2E2E; }
+
+.dark-mode .chart-legend { -fx-background-color: #242424; -fx-text-fill: #F0EDE8; }
+.dark-mode .chart-legend-item { -fx-text-fill: #F0EDE8; }
+.dark-mode .chart-title { -fx-text-fill: #F0EDE8; }
+
+.dark-mode .default-color0.chart-pie { -fx-pie-color: #4B96FF; }
+.dark-mode .default-color1.chart-pie { -fx-pie-color: #34D058; }
+.dark-mode .default-color2.chart-pie { -fx-pie-color: #FFAA33; }
+.dark-mode .default-color3.chart-pie { -fx-pie-color: #FF5E57; }
+
+.default-color0.chart-series-line { -fx-stroke: #2563EB; }
+.default-color0.chart-line-symbol { -fx-background-color: #2563EB, white; -fx-background-radius: 5px; -fx-padding: 5px; }
+
+.dark-mode .default-color0.chart-series-line { -fx-stroke: #4B96FF; }
+.dark-mode .default-color0.chart-line-symbol { -fx-background-color: #4B96FF, white; }
+
+.dark-mode .default-color0.chart-bar { -fx-bar-fill: #4B96FF; }

@@ -3,7 +3,6 @@ package com.keyy.app;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import java.util.List;
 
@@ -55,37 +54,32 @@ public class ProfileController {
             totalAcc += acc;
             totalWpm += wpm;
         }
-        double avgAcc = totalAcc / history.size();
-        double avgWpm = totalWpm / history.size();
 
         totalGamesLabel.setText(String.valueOf(history.size()));
         bestWpmLabel.setText(String.format("%.0f", bestWpm));
-        avgAccLabel.setText(String.format("%.1f%%", avgAcc));
-        avgWpmLabel.setText(String.format("%.0f", avgWpm));
+        avgAccLabel.setText(String.format("%.1f%%", totalAcc / history.size()));
+        avgWpmLabel.setText(String.format("%.0f", totalWpm / history.size()));
 
-        // Render cards
         int num = 1;
         for (String[] entry : history) {
-            HBox card = new HBox(16);
-            card.setAlignment(Pos.CENTER_LEFT);
+            VBox card = new VBox(4);
             card.getStyleClass().add("history-card");
+            card.setStyle("-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #E0DDD8; -fx-border-width: 1; -fx-border-radius: 10; -fx-padding: 14 18 14 18;");
+            if (ThemeManager.isDarkMode()) card.setStyle("-fx-background-color: #242424; -fx-background-radius: 10; -fx-border-color: #3A3A3A; -fx-border-width: 1; -fx-border-radius: 10; -fx-padding: 14 18 14 18;");
 
             Label rankLbl = new Label("#" + num);
             rankLbl.getStyleClass().add("history-rank");
-            rankLbl.setMinWidth(36);
 
-            VBox info = new VBox(3);
-            HBox.setHgrow(info, Priority.ALWAYS);
             Label wpmLbl = new Label(entry[0] + " WPM");
             wpmLbl.getStyleClass().add("history-wpm");
+
             Label detailLbl = new Label("Accuracy: " + entry[1] + "%   •   Time: " + entry[2] + "s");
             detailLbl.getStyleClass().add("history-detail");
-            info.getChildren().addAll(wpmLbl, detailLbl);
 
             Label tsLbl = new Label(entry[3]);
             tsLbl.getStyleClass().add("history-timestamp");
 
-            card.getChildren().addAll(rankLbl, info, tsLbl);
+            card.getChildren().addAll(rankLbl, wpmLbl, detailLbl, tsLbl);
             historyList.getChildren().add(card);
             num++;
         }

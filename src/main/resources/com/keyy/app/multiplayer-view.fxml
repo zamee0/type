@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+
+<VBox fx:id="rootVBox" styleClass="root-pane" spacing="0"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.keyy.app.MultiplayerController">
+
+    <!-- TYPING PANE -->
+    <VBox fx:id="typingPane" spacing="0" VBox.vgrow="ALWAYS">
+
+        <HBox alignment="CENTER" spacing="0" styleClass="page-header">
+            <padding><Insets top="16" right="40" bottom="16" left="40"/></padding>
+            <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                <Label fx:id="timerLabel" text="60" styleClass="timer-big"/>
+                <Label text="SECONDS" styleClass="timer-sub"/>
+            </VBox>
+            <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                <Label fx:id="wpmLiveLabel" text="0 WPM" styleClass="live-wpm"/>
+                <Label text="YOUR WPM" styleClass="timer-sub"/>
+            </VBox>
+            <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+                <Label fx:id="statusLabel" text="Game in progress" styleClass="timer-sub"/>
+            </VBox>
+        </HBox>
+
+        <HBox spacing="16" VBox.vgrow="ALWAYS">
+            <padding><Insets top="28" right="32" bottom="28" left="32"/></padding>
+            <VBox spacing="16" HBox.hgrow="ALWAYS">
+                <VBox styleClass="typing-box">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                    <ScrollPane styleClass="typing-scroll" fitToWidth="true"
+                                prefHeight="160" minHeight="160">
+                        <TextFlow fx:id="textFlow" styleClass="typing-flow" lineSpacing="8"/>
+                    </ScrollPane>
+                </VBox>
+            </VBox>
+            <VBox spacing="12" prefWidth="220">
+                <Label text="OPPONENTS" styleClass="section-label"/>
+                <VBox fx:id="opponentBox" spacing="8"/>
+            </VBox>
+        </HBox>
+    </VBox>
+
+    <!-- RESULT PANE -->
+    <VBox fx:id="resultPane" alignment="CENTER" spacing="24" VBox.vgrow="ALWAYS">
+        <padding><Insets top="40" right="60" bottom="40" left="60"/></padding>
+
+        <Label fx:id="resultHeadingLabel" text="Time's Up!"
+               style="-fx-font-size:42px; -fx-font-weight:900; -fx-text-fill:-fx-text-1;"/>
+        <Label fx:id="resultSubLabel" text=""
+               style="-fx-font-size:15px; -fx-text-fill:-fx-text-2;"/>
+
+        <HBox spacing="16" alignment="CENTER">
+            <VBox styleClass="stat-card" alignment="CENTER" spacing="6" prefWidth="160">
+                <Label fx:id="wpmResultLabel" text="0" styleClass="stat-value"/>
+                <Label text="WPM" styleClass="stat-label"/>
+            </VBox>
+            <VBox styleClass="stat-card" alignment="CENTER" spacing="6" prefWidth="160">
+                <Label fx:id="accResultLabel" text="0%" styleClass="stat-value"/>
+                <Label text="ACCURACY" styleClass="stat-label"/>
+            </VBox>
+        </HBox>
+
+        <VBox spacing="10" alignment="CENTER_LEFT" maxWidth="440">
+            <Label text="OPPONENTS" styleClass="section-label"/>
+            <VBox fx:id="opponentResultBox" spacing="10"/>
+        </VBox>
+
+        <Button fx:id="dashboardBtn" text="Back to Dashboard" styleClass="btn-primary"
+                style="-fx-padding: 12 36 12 36;"/>
+    </VBox>
+
+</VBox>

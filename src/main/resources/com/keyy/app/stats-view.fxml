@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.*?>
 
 <VBox styleClass="root-pane" spacing="0"
       xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
@@ -13,7 +14,36 @@
         <Label text="Stats" styleClass="page-title"/>
     </HBox>
 
-    <VBox VBox.vgrow="ALWAYS" alignment="CENTER">
-    </VBox>
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="page-scroll">
+        <VBox spacing="28">
+            <padding><Insets top="28" right="40" bottom="28" left="40"/></padding>
 
+            <Label fx:id="emptyLabel" text="No data yet. Play some games first!" styleClass="empty-label"/>
+
+            <VBox fx:id="chartsPane" spacing="28">
+
+                <Label text="ACCURACY DISTRIBUTION" styleClass="section-label"/>
+                <PieChart fx:id="accuracyPie" prefHeight="300" legendVisible="true"/>
+
+                <Label text="WPM OVER TIME" styleClass="section-label"/>
+                <LineChart fx:id="wpmLineChart" prefHeight="280">
+                    <xAxis><CategoryAxis label="Game"/></xAxis>
+                    <yAxis><NumberAxis label="WPM"/></yAxis>
+                </LineChart>
+
+                <Label text="ACCURACY OVER TIME" styleClass="section-label"/>
+                <LineChart fx:id="accLineChart" prefHeight="280">
+                    <xAxis><CategoryAxis label="Game"/></xAxis>
+                    <yAxis><NumberAxis label="Accuracy %" lowerBound="0" upperBound="100"/></yAxis>
+                </LineChart>
+
+                <Label text="WPM BY DIFFICULTY" styleClass="section-label"/>
+                <BarChart fx:id="wpmDiffChart" prefHeight="280">
+                    <xAxis><CategoryAxis label="Difficulty"/></xAxis>
+                    <yAxis><NumberAxis label="Avg WPM"/></yAxis>
+                </BarChart>
+
+            </VBox>
+        </VBox>
+    </ScrollPane>
 </VBox>

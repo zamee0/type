@@ -1,47 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.*?>
 
-<VBox styleClass="root-pane" spacing="0"
-      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.keyy.app.SettingsController">
+<VBox spacing="0" styleClass="root-pane" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.keyy.app.SettingsController">
 
-    <HBox styleClass="page-header" alignment="CENTER_LEFT" spacing="16">
-        <padding><Insets top="18" right="28" bottom="18" left="28"/></padding>
-        <Button fx:id="backBtn" text="← Back" styleClass="btn-ghost"/>
-        <Label text="⚙️ Settings" styleClass="page-title"/>
+    <HBox alignment="CENTER_LEFT" spacing="16" styleClass="page-header">
+        <padding><Insets bottom="18" left="28" right="28" top="18" /></padding>
+        <Button fx:id="backBtn" styleClass="btn-ghost" text="← Back" />
+        <Label styleClass="page-title" text="Settings" />
     </HBox>
 
     <VBox spacing="28" VBox.vgrow="ALWAYS">
-        <padding><Insets top="36" right="60" bottom="36" left="60"/></padding>
+        <padding><Insets bottom="36" left="60" right="60" top="36" /></padding>
 
-        <Label text="APPEARANCE" styleClass="section-label"/>
+        <Label styleClass="section-label" text="APPEARANCE" />
 
-        <VBox styleClass="settings-card" spacing="0">
-            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="settings-row">
-                <padding><Insets top="20" right="24" bottom="20" left="24"/></padding>
-                <VBox spacing="4" HBox.hgrow="ALWAYS">
-                    <Label text="Dark Mode" styleClass="settings-label"/>
-                    <Label fx:id="darkModeLabel" text="Light Mode is ON" styleClass="settings-value"/>
+        <VBox spacing="0" styleClass="settings-card">
+            <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: transparent;">
+                <padding><Insets bottom="20" left="24" right="24" top="20" /></padding>
+                <VBox spacing="4" HBox.hgrow="ALWAYS" style="-fx-background-color: transparent;">
+                    <Label styleClass="settings-label" text="Dark Mode" />
+                    <Label fx:id="darkModeLabel" styleClass="settings-value" text="Light Mode is ON" />
                 </VBox>
-                <ToggleButton fx:id="darkModeToggle" text="Switch to Dark" styleClass="toggle-btn"/>
+                <ToggleButton fx:id="darkModeToggle" styleClass="toggle-btn" text="Switch to Dark" />
             </HBox>
         </VBox>
 
-        <Label text="GAMEPLAY" styleClass="section-label"/>
+        <Label styleClass="section-label" text="GAMEPLAY" />
 
-        <VBox styleClass="settings-card" spacing="0">
-            <HBox alignment="CENTER_LEFT" spacing="20" styleClass="settings-row">
-                <padding><Insets top="20" right="24" bottom="20" left="24"/></padding>
-                <VBox spacing="4" HBox.hgrow="ALWAYS">
-                    <Label text="Backspace Key" styleClass="settings-label"/>
-                    <Label fx:id="backspaceLabel" text="Backspace is ON" styleClass="settings-value" wrapText="true"/>
+        <VBox spacing="0" styleClass="settings-card">
+            <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: transparent;">
+                <padding><Insets bottom="20" left="24" right="24" top="20" /></padding>
+                <VBox spacing="4" HBox.hgrow="ALWAYS" style="-fx-background-color: transparent;">
+                    <Label styleClass="settings-label" text="Backspace Key" />
+                    <Label fx:id="backspaceLabel" styleClass="settings-value" text="Backspace is ON" wrapText="true" />
                 </VBox>
-                <ToggleButton fx:id="backspaceToggle" text="Disable" styleClass="toggle-btn"/>
+                <ToggleButton fx:id="backspaceToggle" styleClass="toggle-btn" text="Disable" />
             </HBox>
         </VBox>
 
-        <Label text="All settings take effect immediately." styleClass="settings-hint"/>
+        <Label styleClass="settings-hint" text="All settings take effect immediately." />
     </VBox>
 </VBox>

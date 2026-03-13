@@ -3,27 +3,33 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.*?>
 
-<VBox alignment="CENTER" spacing="20"
+<VBox alignment="CENTER" spacing="24" styleClass="root-pane"
       xmlns="http://javafx.com/javafx/17.0.12"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.keyy.app.LoginController">
 
-    <padding><Insets top="60" right="80" bottom="60" left="80"/></padding>
+    <HBox alignment="CENTER_RIGHT">
+        <padding><Insets top="16" right="20" bottom="0" left="0"/></padding>
+        <Button fx:id="themeBtn" text="☽" styleClass="btn-ghost"
+                style="-fx-font-size: 20px; -fx-padding: 6 12 6 12;"/>
+    </HBox>
 
-    <Label text="KEYY" style="-fx-font-size: 48px; -fx-font-weight: bold;"/>
-    <Label text="Typing Speed Test" style="-fx-font-size: 16px;"/>
+    <VBox alignment="CENTER" spacing="24" VBox.vgrow="ALWAYS">
+        <Label text="KEYY" styleClass="brand-title"/>
+        <Label text="Typing Speed Test" styleClass="brand-sub"/>
 
-    <VBox spacing="10" maxWidth="300">
-        <Label text="Username"/>
-        <TextField fx:id="usernameField" promptText="Enter username"/>
+        <VBox spacing="14" maxWidth="320">
+            <Label text="USERNAME" styleClass="field-label"/>
+            <TextField fx:id="usernameField" promptText="Enter username" styleClass="input-field"/>
 
-        <Label text="Password"/>
-        <PasswordField fx:id="passwordField" promptText="Enter password"/>
+            <Label text="PASSWORD" styleClass="field-label"/>
+            <PasswordField fx:id="passwordField" promptText="Enter password" styleClass="input-field"/>
 
-        <Label fx:id="messageLabel" text="" wrapText="true"/>
+            <Label fx:id="messageLabel" text="" wrapText="true" styleClass="msg-error"/>
 
-        <Button fx:id="loginBtn" text="Login" maxWidth="Infinity" style="-fx-background-color:#34eb55;"/>
-        <Button fx:id="registerBtn" text="Register" maxWidth="Infinity" style="-fx-background-color:#34ebe5"/>
+            <Button fx:id="loginBtn" text="Login" maxWidth="Infinity" styleClass="btn-primary"/>
+            <Button fx:id="registerBtn" text="Register" maxWidth="Infinity" styleClass="btn-secondary"/>
+        </VBox>
     </VBox>
 
 </VBox>
