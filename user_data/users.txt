@@ -23,3 +23,5 @@ pop:back
 newusersssss:1234
 lp:trtr
 newpla:1234
+iamnew:1234
+newplayer:1234

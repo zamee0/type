@@ -99,13 +99,9 @@ public class LocalhostController {
             server.setOnLog(msg -> hostStatusLabel.setText(msg));
             server.setOnPlayersUpdated(players -> {
                 playerListBox.getChildren().clear();
-                Label self = new Label("• " + username + " (You - Host)");
-                self.getStyleClass().add("history-detail");
-                playerListBox.getChildren().add(self);
-                for (String p : players) {
-                    Label lbl = new Label("• " + p);
-                    lbl.getStyleClass().add("history-detail");
-                    playerListBox.getChildren().add(lbl);
+                addPlayerRow(username, true, 1);
+                for (int i = 0; i < players.size(); i++) {
+                    addPlayerRow(players.get(i), false, i + 2);
                 }
                 startGameBtn.setDisable(players.isEmpty());
             });
@@ -115,10 +111,7 @@ public class LocalhostController {
             hostIpLabel.setText("Your IP: " + ip);
             hostStatusLabel.setText("Waiting for players...");
             startGameBtn.setDisable(true);
-
-            Label self = new Label("• " + username + " (You - Host)");
-            self.getStyleClass().add("history-detail");
-            playerListBox.getChildren().add(self);
+            addPlayerRow(username, true, 1);
 
             copyIpBtn.setOnAction(ev -> {
                 Clipboard cb = Clipboard.getSystemClipboard();
@@ -174,12 +167,12 @@ public class LocalhostController {
     private void startGame() {
         if (server == null) return;
         try {
-            List<String> words = buildWordList(50);
-            String wordStr = String.join(" ", words);
+            String wordStr = String.join(" ", buildWordList(80));
             Stage stage = (Stage) backBtn.getScene().getWindow();
             MultiplayerController ctrl = SceneHelper.loadScene(
                     stage, "multiplayer-view.fxml", "KEYY — Multiplayer");
             ctrl.setup(username, wordStr, selectedSeconds, null, true);
+            ctrl.setServer(server);
             server.startGame(wordStr, selectedSeconds);
         } catch (Exception ex) { ex.printStackTrace(); }
     }
@@ -194,6 +187,30 @@ public class LocalhostController {
         List<String> list = new ArrayList<>();
         for (int i = 0; i < count; i++) list.add(bank[rand.nextInt(bank.length)]);
         return list;
+    }
+
+    private void addPlayerRow(String name, boolean isHost, int num) {
+        javafx.scene.layout.HBox row = new javafx.scene.layout.HBox(10);
+        row.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        row.setStyle("-fx-background-color: transparent; -fx-padding: 4 0 4 0;");
+
+        Label numLbl = new Label(num + ".");
+        numLbl.setStyle("-fx-font-size:13px;-fx-font-weight:700;-fx-text-fill:-fx-text-3;-fx-min-width:20;");
+
+        Label nameLbl = new Label(name);
+        nameLbl.setStyle(isHost
+                ? "-fx-font-size:13px;-fx-font-weight:700;-fx-text-fill:#2563EB;"
+                : "-fx-font-size:13px;-fx-text-fill:-fx-text-1;");
+
+        if (isHost) {
+            Label badge = new Label("Host");
+            badge.setStyle("-fx-background-color:#2563EB;-fx-text-fill:white;-fx-font-size:10px;"
+                    + "-fx-font-weight:700;-fx-background-radius:4;-fx-padding:2 6 2 6;");
+            row.getChildren().addAll(numLbl, nameLbl, badge);
+        } else {
+            row.getChildren().addAll(numLbl, nameLbl);
+        }
+        playerListBox.getChildren().add(row);
     }
 
     private void goBack() {

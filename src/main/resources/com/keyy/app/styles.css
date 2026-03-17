@@ -432,6 +432,7 @@
     -fx-border-color: #E0DDD8;
     -fx-border-width: 1;
     -fx-border-radius: 12;
+    -fx-padding: 16 20 16 20;
 }
 .dark-mode .settings-card {
     -fx-background-color: #242424;
@@ -498,8 +499,8 @@
 .dark-mode .default-color2.chart-pie { -fx-pie-color: #FFAA33; }
 .dark-mode .default-color3.chart-pie { -fx-pie-color: #FF5E57; }
 
-.default-color0.chart-series-line { -fx-stroke: #2563EB; }
-.default-color0.chart-line-symbol { -fx-background-color: #2563EB, white; -fx-background-radius: 5px; -fx-padding: 5px; }
+.default-color0.chart-series-line { -fx-stroke: #2563EB; -fx-stroke-width: 2.5px; }
+.default-color0.chart-line-symbol { -fx-background-color: #2563EB, white; -fx-background-radius: 4px; -fx-padding: 4px; }
 
 .dark-mode .default-color0.chart-series-line { -fx-stroke: #4B96FF; }
 .dark-mode .default-color0.chart-line-symbol { -fx-background-color: #4B96FF, white; }

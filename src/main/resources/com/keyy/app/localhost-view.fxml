@@ -42,7 +42,7 @@
                     <Button fx:id="time120" text="120s" styleClass="setup-btn" prefWidth="80"/>
                 </HBox>
 
-                <VBox spacing="10" style="-fx-background-color: white; -fx-background-radius:12; -fx-border-color: #E0DDD8; -fx-border-width:1; -fx-border-radius:12; -fx-padding: 20;">
+                <VBox spacing="10" styleClass="settings-card">
                     <HBox alignment="CENTER_LEFT" spacing="16">
                         <Label fx:id="hostIpLabel" text="Your IP: ..." styleClass="profile-name" HBox.hgrow="ALWAYS"/>
                         <Button fx:id="copyIpBtn" text="Copy" styleClass="btn-ghost"/>
@@ -50,8 +50,8 @@
                     <Label text="Share this IP with other players" styleClass="profile-sub"/>
                 </VBox>
 
-                <Label text="PLAYERS" styleClass="section-label"/>
-                <VBox fx:id="playerListBox" spacing="8"/>
+                <Label text="PLAYERS IN LOBBY" styleClass="section-label"/>
+                <VBox fx:id="playerListBox" spacing="6" styleClass="settings-card"/>
                 <Label fx:id="hostStatusLabel" text="" styleClass="settings-value"/>
                 <Button fx:id="startGameBtn" text="Start Game" styleClass="btn-primary" prefWidth="200"/>
             </VBox>

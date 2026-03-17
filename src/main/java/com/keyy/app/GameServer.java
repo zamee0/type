@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class GameServer {
 
@@ -18,43 +19,50 @@ public class GameServer {
     private Consumer<String> onLog;
     private Consumer<List<String>> onPlayersUpdated;
     private Runnable onGameStart;
+    private Consumer<String> onHostResult;
 
-    public GameServer() {
-    }
+    public GameServer() {}
 
-    public void setOnLog(Consumer<String> cb)                    { this.onLog = cb; }
-    public void setOnPlayersUpdated(Consumer<List<String>> cb)   { this.onPlayersUpdated = cb; }
-    public void setOnGameStart(Runnable cb)                      { this.onGameStart = cb; }
+    public void setOnLog(Consumer<String> cb)                  { this.onLog = cb; }
+    public void setOnPlayersUpdated(Consumer<List<String>> cb) { this.onPlayersUpdated = cb; }
+    public void setOnGameStart(Runnable cb)                    { this.onGameStart = cb; }
+    public void setOnHostResult(Consumer<String> cb)           { this.onHostResult = cb; }
 
     public void start() throws IOException {
         serverSocket = new ServerSocket(PORT);
         log("Server started on port " + PORT);
-
-        Thread acceptThread = new Thread(() -> {
+        Thread t = new Thread(() -> {
             while (!serverSocket.isClosed()) {
                 try {
                     Socket socket = serverSocket.accept();
-                    if (clients.size() >= MAX_PLAYERS) {
-                        socket.close();
-                        continue;
-                    }
-                    ClientHandler handler = new ClientHandler(socket);
-                    clients.add(handler);
-                    new Thread(handler).start();
-                    log("Player connected: " + socket.getInetAddress());
+                    if (clients.size() >= MAX_PLAYERS) { socket.close(); continue; }
+                    ClientHandler h = new ClientHandler(socket);
+                    clients.add(h);
+                    new Thread(h).start();
                 } catch (IOException e) {
                     if (!serverSocket.isClosed()) e.printStackTrace();
                 }
             }
         });
-        acceptThread.setDaemon(true);
-        acceptThread.start();
+        t.setDaemon(true);
+        t.start();
     }
 
     public void startGame(String words, int seconds) {
         gameStarted = true;
         broadcast("START|" + seconds + "|" + words);
         if (onGameStart != null) javafx.application.Platform.runLater(onGameStart);
+    }
+
+    public void broadcastHostResult(String wpm, String accuracy, String hostName, List<Double> history) {
+        String histStr = history.stream().map(d -> String.format("%.1f", d))
+                .collect(java.util.stream.Collectors.joining(","));
+        String msg = "RESULT|" + wpm + "|" + accuracy + "|" + hostName + "|" + histStr;
+        broadcast(msg);
+        if (onHostResult != null) {
+            final String data = wpm + "|" + accuracy + "|" + hostName + "|" + histStr;
+            javafx.application.Platform.runLater(() -> onHostResult.accept(data));
+        }
     }
 
     public void stop() {
@@ -84,22 +92,17 @@ public class GameServer {
         private PrintWriter out;
         String username;
 
-        ClientHandler(Socket socket) {
-            this.socket = socket;
-        }
+        ClientHandler(Socket socket) { this.socket = socket; }
 
         @Override
         public void run() {
             try {
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()), true);
-
                 String line;
-                while ((line = in.readLine()) != null) {
-                    handleMessage(line);
-                }
+                while ((line = in.readLine()) != null) handleMessage(line);
             } catch (IOException e) {
-                log(username + " disconnected.");
+                log((username != null ? username : "Player") + " disconnected.");
             } finally {
                 clients.remove(this);
                 notifyPlayerList();
@@ -115,17 +118,11 @@ public class GameServer {
                 broadcast(msg + "|" + username);
             } else if (msg.startsWith("RESULT|")) {
                 broadcast(msg + "|" + username);
-                log(username + " finished: " + msg.substring(7));
             }
         }
 
-        void send(String msg) {
-            if (out != null) out.println(msg);
-        }
-
-        void close() {
-            try { socket.close(); } catch (IOException e) { e.printStackTrace(); }
-        }
+        void send(String msg) { if (out != null) out.println(msg); }
+        void close() { try { socket.close(); } catch (IOException e) { e.printStackTrace(); } }
     }
 
     private void notifyPlayerList() {
@@ -136,10 +133,7 @@ public class GameServer {
     }
 
     public static String getLocalIP() {
-        try {
-            return InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException e) {
-            return "Unknown";
-        }
+        try { return InetAddress.getLocalHost().getHostAddress(); }
+        catch (UnknownHostException e) { return "Unknown"; }
     }
 }
