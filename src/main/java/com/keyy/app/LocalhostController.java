@@ -22,19 +22,20 @@ public class LocalhostController {
     @FXML private Button diffEasy, diffNormal, diffHard;
     @FXML private Button time15, time30, time60, time120;
 
-    @FXML private Label hostIpLabel;
-    @FXML private Button copyIpBtn;
+    @FXML private Label roomCodeLabel;
+    @FXML private Button copyCodeBtn;
     @FXML private Label hostStatusLabel;
     @FXML private VBox playerListBox;
     @FXML private Button startGameBtn;
 
-    @FXML private TextField joinIpField;
+    @FXML private TextField joinCodeField;
     @FXML private Button connectBtn;
     @FXML private Label joinStatusLabel;
 
     private String username;
     private GameServer server;
     private GameClient client;
+    private String hostIp;
 
     private String selectedDifficulty = "Normal";
     private int selectedSeconds = 60;
@@ -107,20 +108,21 @@ public class LocalhostController {
             });
 
             server.start();
-            String ip = GameServer.getLocalIP();
-            hostIpLabel.setText("Your IP: " + ip);
+            hostIp = GameServer.getLocalIP();
+            String code = encodeCode(hostIp, GameServer.PORT);
+            roomCodeLabel.setText(code);
             hostStatusLabel.setText("Waiting for players...");
             startGameBtn.setDisable(true);
             addPlayerRow(username, true, 1);
 
-            copyIpBtn.setOnAction(ev -> {
+            copyCodeBtn.setOnAction(ev -> {
                 Clipboard cb = Clipboard.getSystemClipboard();
                 ClipboardContent content = new ClipboardContent();
-                content.putString(ip);
+                content.putString(code);
                 cb.setContent(content);
-                copyIpBtn.setText("Copied!");
+                copyCodeBtn.setText("Copied!");
                 PauseTransition pause = new PauseTransition(Duration.seconds(2));
-                pause.setOnFinished(e2 -> copyIpBtn.setText("Copy"));
+                pause.setOnFinished(e2 -> copyCodeBtn.setText("Copy"));
                 pause.play();
             });
 
@@ -134,12 +136,20 @@ public class LocalhostController {
         hostPane.setManaged(false);
         joinPane.setVisible(true);
         joinPane.setManaged(true);
-        joinStatusLabel.setText("Enter host IP and connect.");
+        joinStatusLabel.setText("Enter the room code to join.");
     }
 
     private void joinGame() {
-        String ip = joinIpField.getText().trim();
-        if (ip.isEmpty()) { joinStatusLabel.setText("Enter an IP address."); return; }
+        String code = joinCodeField.getText().trim().toUpperCase();
+        if (code.isEmpty()) { joinStatusLabel.setText("Enter a room code."); return; }
+
+        String ip;
+        try {
+            ip = decodeCode(code);
+        } catch (Exception ex) {
+            joinStatusLabel.setText("Invalid room code.");
+            return;
+        }
 
         client = new GameClient(username);
         client.setOnGameStart(data -> {
@@ -151,7 +161,7 @@ public class LocalhostController {
                 MultiplayerController ctrl = SceneHelper.loadScene(
                         stage, "multiplayer-view.fxml", "KEYY — Multiplayer");
                 ctrl.setup(username, words, seconds, client, false);
-            } catch (Exception ex) { ex.printStackTrace(); }
+            } catch (Exception ex2) { ex2.printStackTrace(); }
         });
         client.setOnDisconnect(() -> joinStatusLabel.setText("Disconnected from host."));
 
@@ -177,6 +187,38 @@ public class LocalhostController {
         } catch (Exception ex) { ex.printStackTrace(); }
     }
 
+    // Encode IP to 6-char alphanumeric code
+    private String encodeCode(String ip, int port) {
+        String[] parts = ip.split("\\.");
+        int a = Integer.parseInt(parts[3]);
+        int b = Integer.parseInt(parts[2]);
+        long val = (long) b * 256 + a;
+        String chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 6; i++) {
+            sb.append(chars.charAt((int)(val % chars.length())));
+            val /= chars.length();
+        }
+        return sb.toString();
+    }
+
+    // Decode code back to IP (assumes same subnet)
+    private String decodeCode(String code) throws Exception {
+        String chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+        long val = 0;
+        for (int i = code.length() - 1; i >= 0; i--) {
+            int idx = chars.indexOf(code.charAt(i));
+            if (idx < 0) throw new Exception("Invalid char");
+            val = val * chars.length() + idx;
+        }
+        int a = (int)(val % 256);
+        int b = (int)(val / 256);
+
+        String localIp = GameServer.getLocalIP();
+        String[] localParts = localIp.split("\\.");
+        return localParts[0] + "." + localParts[1] + "." + b + "." + a;
+    }
+
     private List<String> buildWordList(int count) {
         Random rand = new Random();
         String[] bank = switch (selectedDifficulty) {
@@ -190,7 +232,7 @@ public class LocalhostController {
     }
 
     private void addPlayerRow(String name, boolean isHost, int num) {
-        javafx.scene.layout.HBox row = new javafx.scene.layout.HBox(10);
+        HBox row = new HBox(10);
         row.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
         row.setStyle("-fx-background-color: transparent; -fx-padding: 4 0 4 0;");
 

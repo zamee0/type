@@ -28,26 +28,29 @@
             <VBox fx:id="hostPane" spacing="24" maxWidth="560" alignment="CENTER_LEFT">
 
                 <Label text="DIFFICULTY" styleClass="section-label"/>
-                <HBox fx:id="diffBox" spacing="10">
+                <HBox spacing="10">
                     <Button fx:id="diffEasy"   text="Easy"   styleClass="setup-btn" prefWidth="100"/>
                     <Button fx:id="diffNormal" text="Normal" styleClass="setup-btn" prefWidth="100"/>
                     <Button fx:id="diffHard"   text="Hard"   styleClass="setup-btn" prefWidth="100"/>
                 </HBox>
 
                 <Label text="TIME" styleClass="section-label"/>
-                <HBox fx:id="timeBox" spacing="10">
+                <HBox spacing="10">
                     <Button fx:id="time15"  text="15s"  styleClass="setup-btn" prefWidth="80"/>
                     <Button fx:id="time30"  text="30s"  styleClass="setup-btn" prefWidth="80"/>
                     <Button fx:id="time60"  text="60s"  styleClass="setup-btn" prefWidth="80"/>
                     <Button fx:id="time120" text="120s" styleClass="setup-btn" prefWidth="80"/>
                 </HBox>
 
-                <VBox spacing="10" styleClass="settings-card">
+                <VBox spacing="12" styleClass="settings-card">
+                    <Label text="ROOM CODE" styleClass="field-label"/>
                     <HBox alignment="CENTER_LEFT" spacing="16">
-                        <Label fx:id="hostIpLabel" text="Your IP: ..." styleClass="profile-name" HBox.hgrow="ALWAYS"/>
-                        <Button fx:id="copyIpBtn" text="Copy" styleClass="btn-ghost"/>
+                        <Label fx:id="roomCodeLabel" text="------"
+                               style="-fx-font-size:36px;-fx-font-weight:900;-fx-letter-spacing:8;-fx-text-fill:-fx-accent;"
+                               HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="copyCodeBtn" text="Copy" styleClass="btn-ghost"/>
                     </HBox>
-                    <Label text="Share this IP with other players" styleClass="profile-sub"/>
+                    <Label text="Share this code with other players" styleClass="profile-sub"/>
                 </VBox>
 
                 <Label text="PLAYERS IN LOBBY" styleClass="section-label"/>
@@ -58,8 +61,10 @@
 
             <!-- JOIN PANE -->
             <VBox fx:id="joinPane" spacing="16" maxWidth="400" alignment="CENTER_LEFT">
-                <Label text="HOST IP" styleClass="field-label"/>
-                <TextField fx:id="joinIpField" promptText="e.g. 192.168.1.5" styleClass="input-field"/>
+                <Label text="ROOM CODE" styleClass="field-label"/>
+                <TextField fx:id="joinCodeField" promptText="Enter 6-character code"
+                           styleClass="input-field"
+                           style="-fx-font-size:20px;-fx-font-weight:700;-fx-letter-spacing:4;"/>
                 <Label fx:id="joinStatusLabel" text="" styleClass="settings-value" wrapText="true"/>
                 <Button fx:id="connectBtn" text="Connect" styleClass="btn-primary" prefWidth="200"/>
             </VBox>

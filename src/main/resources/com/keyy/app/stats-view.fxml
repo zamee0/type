@@ -27,21 +27,15 @@
 
                 <Label text="WPM OVER TIME" styleClass="section-label"/>
                 <LineChart fx:id="wpmLineChart" prefHeight="280">
-                    <xAxis><CategoryAxis label="Game"/></xAxis>
+                    <xAxis><CategoryAxis label="Game" tickLabelsVisible="false" tickMarkVisible="false"/></xAxis>
                     <yAxis><NumberAxis label="WPM"/></yAxis>
                 </LineChart>
 
                 <Label text="ACCURACY OVER TIME" styleClass="section-label"/>
                 <LineChart fx:id="accLineChart" prefHeight="280">
-                    <xAxis><CategoryAxis label="Game"/></xAxis>
+                    <xAxis><CategoryAxis label="Game" tickLabelsVisible="false" tickMarkVisible="false"/></xAxis>
                     <yAxis><NumberAxis label="Accuracy %" lowerBound="0" upperBound="100"/></yAxis>
                 </LineChart>
-
-                <Label text="WPM BY DIFFICULTY" styleClass="section-label"/>
-                <BarChart fx:id="wpmDiffChart" prefHeight="280">
-                    <xAxis><CategoryAxis label="Difficulty"/></xAxis>
-                    <yAxis><NumberAxis label="Avg WPM"/></yAxis>
-                </BarChart>
 
             </VBox>
         </VBox>

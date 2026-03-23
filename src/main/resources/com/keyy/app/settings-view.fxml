@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -15,11 +16,10 @@
         <padding><Insets bottom="36" left="60" right="60" top="36" /></padding>
 
         <Label styleClass="section-label" text="APPEARANCE" />
-
         <VBox spacing="0" styleClass="settings-card">
             <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: transparent;">
                 <padding><Insets bottom="20" left="24" right="24" top="20" /></padding>
-                <VBox spacing="4" HBox.hgrow="ALWAYS" style="-fx-background-color: transparent;">
+                <VBox spacing="4" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
                     <Label styleClass="settings-label" text="Dark Mode" />
                     <Label fx:id="darkModeLabel" styleClass="settings-value" text="Light Mode is ON" />
                 </VBox>
@@ -28,11 +28,10 @@
         </VBox>
 
         <Label styleClass="section-label" text="GAMEPLAY" />
-
         <VBox spacing="0" styleClass="settings-card">
             <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: transparent;">
                 <padding><Insets bottom="20" left="24" right="24" top="20" /></padding>
-                <VBox spacing="4" HBox.hgrow="ALWAYS" style="-fx-background-color: transparent;">
+                <VBox spacing="4" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
                     <Label styleClass="settings-label" text="Backspace Key" />
                     <Label fx:id="backspaceLabel" styleClass="settings-value" text="Backspace is ON" wrapText="true" />
                 </VBox>
@@ -40,6 +39,18 @@
             </HBox>
         </VBox>
 
-        <Label styleClass="settings-hint" text="All settings take effect immediately." />
+        <Label styleClass="section-label" text="DATA" />
+        <VBox spacing="0" styleClass="settings-card">
+            <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: transparent;">
+                <padding><Insets bottom="20" left="24" right="24" top="20" /></padding>
+                <VBox spacing="4" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+                    <Label styleClass="settings-label" text="Clear History" />
+                    <Label fx:id="clearHistoryLabel" styleClass="settings-value" text="Delete all your game history permanently." wrapText="true" />
+                </VBox>
+                <Button fx:id="clearHistoryBtn" styleClass="btn-danger" text="Clear" />
+            </HBox>
+        </VBox>
+
+        <Label styleClass="settings-hint" />
     </VBox>
 </VBox>

@@ -13,7 +13,6 @@ public class StatsController {
     @FXML private PieChart accuracyPie;
     @FXML private LineChart<String, Number> wpmLineChart;
     @FXML private LineChart<String, Number> accLineChart;
-    @FXML private BarChart<String, Number> wpmDiffChart;
     @FXML private VBox chartsPane;
     @FXML private Label emptyLabel;
 
@@ -48,7 +47,6 @@ public class StatsController {
         buildAccuracyPie(history);
         buildWpmLine(history);
         buildAccLine(history);
-        buildWpmDiffBar(history);
     }
 
     private void buildAccuracyPie(List<String[]> history) {
@@ -70,16 +68,13 @@ public class StatsController {
     private void buildWpmLine(List<String[]> history) {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("WPM");
-
         List<String[]> ordered = new ArrayList<>(history);
         Collections.reverse(ordered);
-
         int max = Math.min(ordered.size(), 20);
         for (int i = 0; i < max; i++) {
             double wpm = Double.parseDouble(ordered.get(i)[0]);
-            series.getData().add(new XYChart.Data<>("#" + (i + 1), wpm));
+            series.getData().add(new XYChart.Data<>(String.valueOf(i + 1), wpm));
         }
-
         wpmLineChart.getData().clear();
         wpmLineChart.getData().add(series);
         wpmLineChart.setLegendVisible(false);
@@ -88,48 +83,16 @@ public class StatsController {
     private void buildAccLine(List<String[]> history) {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Accuracy");
-
         List<String[]> ordered = new ArrayList<>(history);
         Collections.reverse(ordered);
-
         int max = Math.min(ordered.size(), 20);
         for (int i = 0; i < max; i++) {
             double acc = Double.parseDouble(ordered.get(i)[1]);
-            series.getData().add(new XYChart.Data<>("#" + (i + 1), acc));
+            series.getData().add(new XYChart.Data<>(String.valueOf(i + 1), acc));
         }
-
         accLineChart.getData().clear();
         accLineChart.getData().add(series);
         accLineChart.setLegendVisible(false);
-    }
-
-    private void buildWpmDiffBar(List<String[]> history) {
-        Map<String, List<Double>> byDiff = new LinkedHashMap<>();
-        byDiff.put("15s",  new ArrayList<>());
-        byDiff.put("30s",  new ArrayList<>());
-        byDiff.put("60s",  new ArrayList<>());
-        byDiff.put("120s", new ArrayList<>());
-
-        for (String[] e : history) {
-            String key = e[2] + "s";
-            if (byDiff.containsKey(key))
-                byDiff.get(key).add(Double.parseDouble(e[0]));
-        }
-
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Avg WPM");
-
-        for (Map.Entry<String, List<Double>> entry : byDiff.entrySet()) {
-            if (!entry.getValue().isEmpty()) {
-                double avg = entry.getValue().stream()
-                        .mapToDouble(Double::doubleValue).average().orElse(0);
-                series.getData().add(new XYChart.Data<>(entry.getKey(), avg));
-            }
-        }
-
-        wpmDiffChart.getData().clear();
-        wpmDiffChart.getData().add(series);
-        wpmDiffChart.setLegendVisible(false);
     }
 
     private void goBack() {

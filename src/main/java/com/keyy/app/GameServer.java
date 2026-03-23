@@ -20,6 +20,7 @@ public class GameServer {
     private Consumer<List<String>> onPlayersUpdated;
     private Runnable onGameStart;
     private Consumer<String> onHostResult;
+    private Consumer<String> onClientResult;
 
     public GameServer() {}
 
@@ -27,6 +28,7 @@ public class GameServer {
     public void setOnPlayersUpdated(Consumer<List<String>> cb) { this.onPlayersUpdated = cb; }
     public void setOnGameStart(Runnable cb)                    { this.onGameStart = cb; }
     public void setOnHostResult(Consumer<String> cb)           { this.onHostResult = cb; }
+    public void setOnClientResult(Consumer<String> cb)         { this.onClientResult = cb; }
 
     public void start() throws IOException {
         serverSocket = new ServerSocket(PORT);
@@ -57,10 +59,10 @@ public class GameServer {
     public void broadcastHostResult(String wpm, String accuracy, String hostName, List<Double> history) {
         String histStr = history.stream().map(d -> String.format("%.1f", d))
                 .collect(java.util.stream.Collectors.joining(","));
-        String msg = "RESULT|" + wpm + "|" + accuracy + "|" + hostName + "|" + histStr;
+        String msg = "RESULT|" + wpm + "|" + accuracy + "|" + histStr + "|" + hostName;
         broadcast(msg);
         if (onHostResult != null) {
-            final String data = wpm + "|" + accuracy + "|" + hostName + "|" + histStr;
+            final String data = wpm + "|" + accuracy + "|" + histStr + "|" + hostName;
             javafx.application.Platform.runLater(() -> onHostResult.accept(data));
         }
     }
@@ -117,7 +119,12 @@ public class GameServer {
             } else if (msg.startsWith("PROGRESS|")) {
                 broadcast(msg + "|" + username);
             } else if (msg.startsWith("RESULT|")) {
-                broadcast(msg + "|" + username);
+                String data = msg.substring(7) + "|" + username;
+                broadcast("RESULT|" + data);
+                if (onClientResult != null) {
+                    final String d = data;
+                    javafx.application.Platform.runLater(() -> onClientResult.accept(d));
+                }
             }
         }
 

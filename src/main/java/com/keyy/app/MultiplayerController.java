@@ -27,7 +27,6 @@ public class MultiplayerController {
     @FXML private Label accResultLabel;
     @FXML private HBox podiumBox;
     @FXML private VBox rankingBox;
-    @FXML private javafx.scene.chart.LineChart<String, Number> wpmChart;
     @FXML private Button dashboardBtn;
 
     private String username;
@@ -66,10 +65,8 @@ public class MultiplayerController {
         this.GAME_SECONDS = seconds;
         this.timeLeft     = seconds;
         timerLabel.setText(String.valueOf(seconds));
-
         wordBank = words.split(" ");
         wordBankIndex = 0;
-
         liveProgress.put(username, 0);
 
         if (client != null) {
@@ -94,13 +91,17 @@ public class MultiplayerController {
                 for (String p : players) liveProgress.putIfAbsent(p, 0);
                 refreshOpponentSummary();
             });
-            server.setOnHostResult(data -> {
-                String[] parts = data.split("\\|", 4);
-                if (parts.length < 3) return;
-                String name = parts[2];
-                allFinalWpm.put(name, Double.parseDouble(parts[0]));
-                allFinalAcc.put(name, Double.parseDouble(parts[1]));
-                if (resultPane.isVisible()) buildPodium();
+            server.setOnClientResult(data -> {
+                int lastPipe = data.lastIndexOf("|");
+                if (lastPipe < 0) return;
+                String name = data.substring(lastPipe + 1);
+                String[] parts = data.substring(0, lastPipe).split("\\|");
+                if (parts.length < 2) return;
+                try {
+                    allFinalWpm.put(name, Double.parseDouble(parts[0]));
+                    allFinalAcc.put(name, Double.parseDouble(parts[1]));
+                } catch (NumberFormatException ignored) {}
+                buildRanking();
             });
         }
     }
@@ -243,20 +244,20 @@ public class MultiplayerController {
     }
 
     private void handleOpponentResult(String data) {
-        // format: wpm|accuracy|name|history
-        String[] parts = data.split("\\|", 4);
-        if (parts.length < 3) return;
-        String name = parts[2];
-        allFinalWpm.put(name, Double.parseDouble(parts[0]));
-        allFinalAcc.put(name, Double.parseDouble(parts[1]));
-        if (resultPane.isVisible()) buildPodium();
+        int lastPipe = data.lastIndexOf("|");
+        if (lastPipe < 0) return;
+        String name = data.substring(lastPipe + 1);
+        String[] parts = data.substring(0, lastPipe).split("\\|");
+        if (parts.length < 2) return;
+        try {
+            allFinalWpm.put(name, Double.parseDouble(parts[0]));
+            allFinalAcc.put(name, Double.parseDouble(parts[1]));
+        } catch (NumberFormatException ignored) {}
+        if (resultPane.isVisible()) buildRanking();
     }
 
     private void refreshOpponentSummary() {
-        if (liveProgress.size() <= 1) {
-            opponentSummaryLabel.setText("");
-            return;
-        }
+        if (liveProgress.size() <= 1) { opponentSummaryLabel.setText(""); return; }
         StringBuilder sb = new StringBuilder();
         List<Map.Entry<String, Integer>> sorted = new ArrayList<>(liveProgress.entrySet());
         sorted.sort((a, b) -> b.getValue() - a.getValue());
@@ -286,8 +287,7 @@ public class MultiplayerController {
         if (server != null) server.broadcastHostResult(
                 String.format("%.0f", myWpm),
                 String.format("%.1f", myAcc),
-                username,
-                myWpmHistory);
+                username, myWpmHistory);
 
         UserManager.saveResult(username, myWpm, myAcc, GAME_SECONDS);
 
@@ -299,10 +299,13 @@ public class MultiplayerController {
         resultPane.setVisible(true);
         resultPane.setManaged(true);
 
-        buildPodium();
+        buildRanking();
+        PauseTransition wait = new PauseTransition(Duration.seconds(2));
+        wait.setOnFinished(e -> buildRanking());
+        wait.play();
     }
 
-    private void buildPodium() {
+    private void buildRanking() {
         List<Map.Entry<String, Double>> ranked = new ArrayList<>(allFinalWpm.entrySet());
         ranked.sort((a, b) -> Double.compare(b.getValue(), a.getValue()));
 
@@ -330,10 +333,9 @@ public class MultiplayerController {
         rankingBox.getChildren().clear();
 
         String[] medalColors = {"#F59E0B", "#94A3B8", "#B45309"};
-        String[] podiumBg    = {"rgba(245,158,11,0.12)", "rgba(148,163,184,0.10)", "rgba(180,83,9,0.10)"};
-        int[] heights        = {160, 120, 100};
-
-        int total = ranked.size();
+        String[] podiumBg    = {"rgba(245,158,11,0.13)", "rgba(148,163,184,0.11)", "rgba(180,83,9,0.11)"};
+        int[]    heights     = {220, 150, 110};
+        int      total       = ranked.size();
 
         if (total == 1) {
             buildPodiumSlot(ranked.get(0), 1, medalColors[0], podiumBg[0], heights[0]);
@@ -346,59 +348,34 @@ public class MultiplayerController {
             buildPodiumSlot(ranked.get(2), 3, medalColors[2], podiumBg[2], heights[2]);
         }
 
+        String[] posLabels = {"4th","5th","6th","7th","8th"};
         for (int i = 3; i < ranked.size(); i++) {
             String name  = ranked.get(i).getKey();
             double wpm   = ranked.get(i).getValue();
             double acc   = allFinalAcc.getOrDefault(name, 0.0);
             boolean isMe = name.equals(username);
+            String pos   = i - 3 < posLabels.length ? posLabels[i - 3] : (i + 1) + "th";
 
-            HBox row = new HBox(14);
+            HBox row = new HBox(16);
             row.setAlignment(Pos.CENTER_LEFT);
             row.setStyle(isMe
-                    ? "-fx-background-color:rgba(37,99,235,0.08);-fx-background-radius:8;-fx-border-color:#2563EB;-fx-border-width:1.5;-fx-border-radius:8;-fx-padding:10 16 10 16;"
-                    : "-fx-background-color:white;-fx-background-radius:8;-fx-border-color:#E0DDD8;-fx-border-width:1;-fx-border-radius:8;-fx-padding:10 16 10 16;");
+                    ? "-fx-background-color:rgba(37,99,235,0.08);-fx-background-radius:10;-fx-border-color:#2563EB;-fx-border-width:2;-fx-border-radius:10;-fx-padding:12 20 12 20;"
+                    : "-fx-background-color:white;-fx-background-radius:10;-fx-border-color:#E0DDD8;-fx-border-width:1;-fx-border-radius:10;-fx-padding:12 20 12 20;");
 
-            Label pos = new Label((i + 1) + "th");
-            pos.setStyle("-fx-font-size:13px;-fx-font-weight:700;-fx-text-fill:-fx-text-3;-fx-min-width:32;");
-            Label nl = new Label(name + (isMe ? " ★" : ""));
-            nl.setStyle("-fx-font-size:13px;-fx-font-weight:" + (isMe ? "700" : "400")
+            Label posLbl = new Label(pos);
+            posLbl.setStyle("-fx-font-size:13px;-fx-font-weight:700;-fx-text-fill:#6B6760;-fx-min-width:36;");
+            Label nameLbl = new Label(name + (isMe ? " ★" : ""));
+            nameLbl.setStyle("-fx-font-size:13px;-fx-font-weight:" + (isMe ? "700" : "400")
                     + ";-fx-text-fill:" + (isMe ? "#2563EB" : "-fx-text-1") + ";");
-            HBox.setHgrow(nl, Priority.ALWAYS);
-            Label wl = new Label(String.format("%.0f WPM", wpm));
-            wl.setStyle("-fx-font-size:13px;-fx-font-weight:700;");
-            Label al = new Label(String.format("%.1f%%", acc));
-            al.setStyle("-fx-font-size:11px;-fx-text-fill:-fx-text-2;-fx-min-width:44;");
+            HBox.setHgrow(nameLbl, Priority.ALWAYS);
+            Label wpmLbl = new Label(String.format("%.0f WPM", wpm));
+            wpmLbl.setStyle("-fx-font-size:13px;-fx-font-weight:700;");
+            Label accLbl = new Label(String.format("%.1f%%", acc));
+            accLbl.setStyle("-fx-font-size:11px;-fx-text-fill:-fx-text-2;-fx-min-width:44;");
 
-            row.getChildren().addAll(pos, nl, wl, al);
+            row.getChildren().addAll(posLbl, nameLbl, wpmLbl, accLbl);
             rankingBox.getChildren().add(row);
         }
-
-        buildWpmChart();
-    }
-
-    private void buildWpmChart() {
-        wpmChart.getData().clear();
-        if (myWpmHistory.isEmpty()) return;
-
-        javafx.scene.chart.XYChart.Series<String, Number> series = new javafx.scene.chart.XYChart.Series<>();
-        series.setName(username);
-
-        for (int i = 0; i < myWpmHistory.size(); i++) {
-            int sec = (i + 1) * 5;
-            String label = (sec % 10 == 0) ? sec + "s" : "";
-            series.getData().add(new javafx.scene.chart.XYChart.Data<>(label, myWpmHistory.get(i)));
-        }
-
-        wpmChart.getData().add(series);
-
-        javafx.application.Platform.runLater(() -> {
-            for (javafx.scene.chart.XYChart.Data<String, Number> d : series.getData()) {
-                if (d.getNode() != null) {
-                    d.getNode().setStyle("-fx-background-color: #2563EB, white;"
-                            + "-fx-background-radius: 4px; -fx-padding: 4px;");
-                }
-            }
-        });
     }
 
     private void buildPodiumSlot(Map.Entry<String, Double> entry, int rank,
@@ -407,35 +384,38 @@ public class MultiplayerController {
         double wpm   = entry.getValue();
         double acc   = allFinalAcc.getOrDefault(name, 0.0);
         boolean isMe = name.equals(username);
+        String[] rankLabels = {"1st", "2nd", "3rd"};
 
-        String rankLabel = rank == 1 ? "1st" : rank == 2 ? "2nd" : "3rd";
-
-        Label rankLbl = new Label(rankLabel);
-        rankLbl.setStyle("-fx-font-size:13px;-fx-font-weight:800;-fx-text-fill:" + mc + ";");
+        Label rankLbl = new Label(rankLabels[rank - 1]);
+        rankLbl.setStyle("-fx-font-size:12px;-fx-font-weight:800;-fx-text-fill:" + mc + ";");
 
         Label nameLbl = new Label(name + (isMe ? " ★" : ""));
-        nameLbl.setStyle("-fx-font-size:13px;-fx-font-weight:" + (isMe ? "800" : "600")
+        nameLbl.setStyle("-fx-font-size:" + (rank == 1 ? "15" : "13") + "px;-fx-font-weight:" + (isMe ? "800" : "600")
                 + ";-fx-text-fill:" + (isMe ? "#2563EB" : "-fx-text-1") + ";");
         nameLbl.setWrapText(true);
-        nameLbl.setMaxWidth(120);
+        nameLbl.setMaxWidth(130);
         nameLbl.setAlignment(Pos.CENTER);
 
         Label wpmLbl = new Label(String.format("%.0f WPM", wpm));
-        wpmLbl.setStyle("-fx-font-size:15px;-fx-font-weight:900;-fx-text-fill:" + mc + ";");
+        wpmLbl.setStyle("-fx-font-size:" + (rank == 1 ? "17" : "14") + "px;-fx-font-weight:900;-fx-text-fill:" + mc + ";");
 
         Label accLbl = new Label(String.format("%.1f%%", acc));
         accLbl.setStyle("-fx-font-size:11px;-fx-text-fill:-fx-text-2;");
 
-        VBox platform = new VBox(8);
+        VBox platform = new VBox(6);
         platform.setAlignment(Pos.CENTER);
+        platform.setMinHeight(height);
         platform.setPrefHeight(height);
-        platform.setPrefWidth(150);
-        platform.setStyle("-fx-background-color:" + bg
-                + ";-fx-background-radius:10 10 0 0;"
-                + "-fx-border-color:" + mc + ";-fx-border-width:1.5 1.5 0 1.5;"
-                + "-fx-border-radius:10 10 0 0;-fx-padding:14;");
+        platform.setMaxHeight(height);
+        platform.setPrefWidth(rank == 1 ? 160 : 140);
+        platform.setStyle(
+                "-fx-background-color:" + bg + ";"
+                        + "-fx-background-radius:10 10 0 0;"
+                        + "-fx-border-color:" + mc + ";"
+                        + "-fx-border-width:" + (isMe ? "2.5" : "1.5") + " " + (isMe ? "2.5" : "1.5") + " 0 " + (isMe ? "2.5" : "1.5") + ";"
+                        + "-fx-border-radius:10 10 0 0;"
+                        + "-fx-padding:14;");
         platform.getChildren().addAll(rankLbl, nameLbl, wpmLbl, accLbl);
-
         podiumBox.getChildren().add(platform);
     }
 

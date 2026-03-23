@@ -74,6 +74,11 @@ public class UserManager {
         return list;
     }
 
+    public static void clearHistory(String username) {
+        java.io.File f = new java.io.File(USER_DATA_DIR + "/" + username + "_history.txt");
+        if (f.exists()) f.delete();
+    }
+
     // Top 10 by best WPM. Each entry: [username, bestWpm]
     public static List<String[]> getLeaderboard() {
         Map<String, Double> best = new HashMap<>();

@@ -444,7 +444,15 @@
 .settings-value  { -fx-font-size: 13px; -fx-text-fill: -fx-text-2; }
 .settings-hint   { -fx-font-size: 12px; -fx-text-fill: -fx-text-3; }
 
-.toggle-btn {
+.btn-danger {
+    -fx-background-color: #DC2626;
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+    -fx-background-radius: 8;
+    -fx-padding: 8 18 8 18;
+    -fx-cursor: hand;
+}
+.btn-danger:hover { -fx-background-color: #B91C1C; }
     -fx-background-color: -fx-surface2;
     -fx-text-fill: -fx-text-1;
     -fx-font-size: 13px;
@@ -481,6 +489,7 @@
 .axis {
     -fx-tick-label-fill: -fx-text-2;
     -fx-tick-mark-stroke: -fx-border;
+    -fx-tick-label-font-size: 10px;
 }
 .dark-mode .axis { -fx-tick-label-fill: #B0ABA4; }
 .dark-mode .axis-label { -fx-text-fill: #B0ABA4; }
@@ -493,6 +502,11 @@
 .dark-mode .chart-legend { -fx-background-color: #242424; -fx-text-fill: #F0EDE8; }
 .dark-mode .chart-legend-item { -fx-text-fill: #F0EDE8; }
 .dark-mode .chart-title { -fx-text-fill: #F0EDE8; }
+
+.default-color0.chart-pie { -fx-pie-color: #2563EB; }
+.default-color1.chart-pie { -fx-pie-color: #16A34A; }
+.default-color2.chart-pie { -fx-pie-color: #D97706; }
+.default-color3.chart-pie { -fx-pie-color: #DC2626; }
 
 .dark-mode .default-color0.chart-pie { -fx-pie-color: #4B96FF; }
 .dark-mode .default-color1.chart-pie { -fx-pie-color: #34D058; }
