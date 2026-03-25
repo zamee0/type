@@ -32,3 +32,5 @@ kk:oooo
 rrrr:1234
 ppppp:12345
 tttt:1234
+npl:1234
+kkkm:1234

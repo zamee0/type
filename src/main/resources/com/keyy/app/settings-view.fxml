@@ -12,6 +12,7 @@
         <Label styleClass="page-title" text="Settings" />
     </HBox>
 
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="page-scroll">
     <VBox spacing="28" VBox.vgrow="ALWAYS">
         <padding><Insets bottom="36" left="60" right="60" top="36" /></padding>
 
@@ -53,4 +54,5 @@
 
         <Label styleClass="settings-hint" />
     </VBox>
+    </ScrollPane>
 </VBox>

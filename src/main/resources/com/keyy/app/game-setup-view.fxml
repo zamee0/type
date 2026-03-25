@@ -8,12 +8,13 @@
       fx:controller="com.keyy.app.GameSetupController">
 
     <!-- Header -->
+
     <HBox styleClass="page-header" alignment="CENTER_LEFT" spacing="16">
         <padding><Insets top="18" right="28" bottom="18" left="28"/></padding>
         <Button fx:id="backBtn" text="← Back" styleClass="btn-ghost"/>
         <Label text="New Game" styleClass="page-title"/>
     </HBox>
-
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="page-scroll">
     <!-- Body -->
     <VBox alignment="CENTER" spacing="48" VBox.vgrow="ALWAYS">
         <padding><Insets top="50" right="100" bottom="50" left="100"/></padding>
@@ -47,4 +48,5 @@
         <Button fx:id="startBtn" text="Start Game →" styleClass="btn-primary-large"/>
 
     </VBox>
+    </ScrollPane>
 </VBox>
