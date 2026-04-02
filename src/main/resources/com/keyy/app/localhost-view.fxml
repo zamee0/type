@@ -44,12 +44,13 @@
 
                 <VBox spacing="12" styleClass="settings-card">
                     <Label text="ROOM CODE" styleClass="field-label"/>
-                    <HBox alignment="CENTER_LEFT" spacing="16">
+
                         <Label fx:id="roomCodeLabel" text="------"
                                style="-fx-font-size:36px;-fx-font-weight:900;-fx-letter-spacing:8;-fx-text-fill:-fx-accent;"
                                HBox.hgrow="ALWAYS"/>
+
                         <Button fx:id="copyCodeBtn" text="Copy" styleClass="btn-ghost"/>
-                    </HBox>
+
                     <Label text="Share this code with other players" styleClass="profile-sub"/>
                 </VBox>
 
