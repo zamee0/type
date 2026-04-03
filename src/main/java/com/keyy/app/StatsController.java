@@ -68,26 +68,35 @@ public class StatsController {
     private void buildWpmLine(List<String[]> history) {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("WPM");
-        List<String[]> ordered = new ArrayList<>(history);
-        Collections.reverse(ordered);
-        int max = Math.min(ordered.size(), 20);
-        for (int i = 0; i < max; i++) {
-            double wpm = Double.parseDouble(ordered.get(i)[0]);
+        List<String[]> recent = new ArrayList<>(history.subList(0, Math.min(30, history.size())));
+        Collections.reverse(recent);
+        double maxWpm = 0;
+        for (int i = 0; i < recent.size(); i++) {
+            double wpm = Double.parseDouble(recent.get(i)[0]);
+            if (wpm > maxWpm) maxWpm = wpm;
             series.getData().add(new XYChart.Data<>(String.valueOf(i + 1), wpm));
         }
         wpmLineChart.getData().clear();
         wpmLineChart.getData().add(series);
         wpmLineChart.setLegendVisible(false);
+
+        javafx.scene.chart.NumberAxis yAxis = (javafx.scene.chart.NumberAxis) wpmLineChart.getYAxis();
+        if (maxWpm > 120) {
+            yAxis.setAutoRanging(true);
+        } else {
+            yAxis.setAutoRanging(false);
+            yAxis.setUpperBound(120);
+            yAxis.setTickUnit(20);
+        }
     }
 
     private void buildAccLine(List<String[]> history) {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Accuracy");
-        List<String[]> ordered = new ArrayList<>(history);
-        Collections.reverse(ordered);
-        int max = Math.min(ordered.size(), 20);
-        for (int i = 0; i < max; i++) {
-            double acc = Double.parseDouble(ordered.get(i)[1]);
+        List<String[]> recent = new ArrayList<>(history.subList(0, Math.min(30, history.size())));
+        Collections.reverse(recent);
+        for (int i = 0; i < recent.size(); i++) {
+            double acc = Double.parseDouble(recent.get(i)[1]);
             series.getData().add(new XYChart.Data<>(String.valueOf(i + 1), acc));
         }
         accLineChart.getData().clear();

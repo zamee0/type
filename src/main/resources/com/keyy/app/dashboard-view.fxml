@@ -24,7 +24,7 @@
         <VBox alignment="CENTER" spacing="32" styleClass="dash-main">
             <padding><Insets bottom="60" left="70" right="70" top="60" /></padding>
             <VBox spacing="8">
-                <Label fx:id="welcomeLabel" styleClass="welcome-title" text="Welcome back!" />
+                <Label fx:id="welcomeLabel" styleClass="welcome-title" text="Welcome " />
                 <Label styleClass="welcome-sub" />
             </VBox>
             <Button fx:id="startGameBtnCenter" styleClass="btn-primary-large" text="Start Typing Now" />

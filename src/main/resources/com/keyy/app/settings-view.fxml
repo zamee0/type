@@ -12,47 +12,56 @@
         <Label styleClass="page-title" text="Settings" />
     </HBox>
 
-    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="page-scroll">
-    <VBox spacing="28" VBox.vgrow="ALWAYS">
-        <padding><Insets bottom="36" left="60" right="60" top="36" /></padding>
+    <ScrollPane fitToWidth="true" styleClass="page-scroll" VBox.vgrow="ALWAYS">
+        <VBox spacing="28">
+            <padding><Insets bottom="36" left="60" right="60" top="36" /></padding>
 
-        <Label styleClass="section-label" text="APPEARANCE" />
-        <VBox spacing="0" styleClass="settings-card">
-            <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: transparent;">
+            <Label styleClass="section-label" text="APPEARANCE" />
+            <VBox spacing="0" styleClass="settings-card">
+                <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: transparent;">
+                    <padding><Insets bottom="20" left="24" right="24" top="20" /></padding>
+                    <VBox spacing="4" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+                        <Label styleClass="settings-label" text="Dark Mode" />
+                        <Label fx:id="darkModeLabel" styleClass="settings-value" text="Light Mode is ON" />
+                    </VBox>
+                    <ToggleButton fx:id="darkModeToggle" styleClass="toggle-btn" text="Switch to Dark" />
+                </HBox>
+            </VBox>
+
+            <Label styleClass="section-label" text="GAMEPLAY" />
+            <VBox spacing="0" styleClass="settings-card">
+                <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: transparent;">
+                    <padding><Insets bottom="20" left="24" right="24" top="20" /></padding>
+                    <VBox spacing="4" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+                        <Label styleClass="settings-label" text="Backspace Key" />
+                        <Label fx:id="backspaceLabel" styleClass="settings-value" text="Backspace is ON" wrapText="true" />
+                    </VBox>
+                    <ToggleButton fx:id="backspaceToggle" styleClass="toggle-btn" text="Disable" />
+                </HBox>
+            </VBox>
+
+            <Label styleClass="section-label" text="DATA" />
+            <VBox spacing="0" styleClass="settings-card">
+                <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: transparent;">
+                    <padding><Insets bottom="20" left="24" right="24" top="20" /></padding>
+                    <VBox spacing="4" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
+                        <Label styleClass="settings-label" text="Clear History" />
+                        <Label fx:id="clearHistoryLabel" styleClass="settings-value" text="Delete all your game history permanently." wrapText="true" />
+                    </VBox>
+                    <Button fx:id="clearHistoryBtn" styleClass="btn-danger" text="Clear" />
+                </HBox>
+            </VBox>
+
+            <Label styleClass="section-label" text="KEYBOARD SHORTCUTS" />
+            <VBox spacing="0" styleClass="settings-card">
                 <padding><Insets bottom="20" left="24" right="24" top="20" /></padding>
-                <VBox spacing="4" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
-                    <Label styleClass="settings-label" text="Dark Mode" />
-                    <Label fx:id="darkModeLabel" styleClass="settings-value" text="Light Mode is ON" />
-                </VBox>
-                <ToggleButton fx:id="darkModeToggle" styleClass="toggle-btn" text="Switch to Dark" />
-            </HBox>
-        </VBox>
+                <VBox prefHeight="20.0" prefWidth="286.0" spacing="12" style="-fx-background-color: transparent;">
 
-        <Label styleClass="section-label" text="GAMEPLAY" />
-        <VBox spacing="0" styleClass="settings-card">
-            <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: transparent;">
-                <padding><Insets bottom="20" left="24" right="24" top="20" /></padding>
-                <VBox spacing="4" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
-                    <Label styleClass="settings-label" text="Backspace Key" />
-                    <Label fx:id="backspaceLabel" styleClass="settings-value" text="Backspace is ON" wrapText="true" />
+                        <Label styleClass="shortcut-key" text="Ctrl + D" />
+                        <Label styleClass="settings-value" text="Toggle Dark / Light Mode" />
                 </VBox>
-                <ToggleButton fx:id="backspaceToggle" styleClass="toggle-btn" text="Disable" />
-            </HBox>
-        </VBox>
+            </VBox>
 
-        <Label styleClass="section-label" text="DATA" />
-        <VBox spacing="0" styleClass="settings-card">
-            <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: transparent;">
-                <padding><Insets bottom="20" left="24" right="24" top="20" /></padding>
-                <VBox spacing="4" style="-fx-background-color: transparent;" HBox.hgrow="ALWAYS">
-                    <Label styleClass="settings-label" text="Clear History" />
-                    <Label fx:id="clearHistoryLabel" styleClass="settings-value" text="Delete all your game history permanently." wrapText="true" />
-                </VBox>
-                <Button fx:id="clearHistoryBtn" styleClass="btn-danger" text="Clear" />
-            </HBox>
         </VBox>
-
-        <Label styleClass="settings-hint" />
-    </VBox>
     </ScrollPane>
 </VBox>

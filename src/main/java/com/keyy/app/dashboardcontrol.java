@@ -53,7 +53,7 @@ public class dashboardcontrol {
 
     public void setUsername(String username) {
         this.username = username;
-        welcomeLabel.setText("Welcome back, " + username);
+        welcomeLabel.setText("Welcome, " + username+"!");
     }
 
     private void nav(String fxml, String title, ControllerInit init) {
