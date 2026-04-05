@@ -17,6 +17,7 @@
             <Button fx:id="leaderboardBtn" maxWidth="Infinity" styleClass="nav-btn" text="  Leaderboard" />
             <Button fx:id="settingsBtn" maxWidth="Infinity" styleClass="nav-btn" text="  Settings" />
             <Region VBox.vgrow="ALWAYS" />
+            <Button fx:id="aboutBtn" maxWidth="Infinity" styleClass="nav-btn" text="  About" />
             <Button fx:id="logoutBtn" maxWidth="Infinity" styleClass="nav-btn-logout" text="  Logout" />
         </VBox>
     </left>

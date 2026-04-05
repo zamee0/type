@@ -13,6 +13,7 @@ public class dashboardcontrol {
     @FXML private Button localhostBtn;
     @FXML private Button leaderboardBtn;
     @FXML private Button settingsBtn;
+    @FXML private Button aboutBtn;
     @FXML private Button logoutBtn;
 
     private String username;
@@ -37,6 +38,9 @@ public class dashboardcontrol {
         settingsBtn.setOnAction(e -> nav("settings-view.fxml", "KEYY — Settings", ctrl -> {
             if (ctrl instanceof SettingsController) ((SettingsController) ctrl).setUsername(username);
         }));
+        aboutBtn.setOnAction(e -> nav("about-view.fxml", "KEYY — About", ctrl -> {
+            if (ctrl instanceof AboutController) ((AboutController) ctrl).setUsername(username);
+        }));
         logoutBtn.setOnAction(e -> {
             try {
                 Stage stage = (Stage) logoutBtn.getScene().getWindow();
@@ -53,7 +57,7 @@ public class dashboardcontrol {
 
     public void setUsername(String username) {
         this.username = username;
-        welcomeLabel.setText("Welcome, " + username+"!");
+        welcomeLabel.setText("Welcome, " + username + "!");
     }
 
     private void nav(String fxml, String title, ControllerInit init) {

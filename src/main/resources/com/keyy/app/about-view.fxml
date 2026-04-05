@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="0" styleClass="root-pane" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.keyy.app.AboutController">
+
+    <HBox alignment="CENTER_LEFT" spacing="16" styleClass="page-header">
+        <padding><Insets bottom="18" left="28" right="28" top="18" /></padding>
+        <Button fx:id="backBtn" styleClass="btn-ghost" text="← Back" />
+        <Label styleClass="page-title" text="About" />
+    </HBox>
+
+    <VBox alignment="CENTER" spacing="40" VBox.vgrow="ALWAYS">
+        <padding><Insets bottom="60" left="80" right="80" top="60" /></padding>
+
+        <VBox alignment="CENTER" spacing="8">
+            <Label style="-fx-font-size:72px;-fx-font-weight:900;-fx-text-fill:-fx-accent;" text="KEYY" />
+            <Label style="-fx-font-size:16px;-fx-text-fill:-fx-text-2;" text="Typing Speed Test" />
+        </VBox>
+
+        <Separator maxWidth="400" prefHeight="0.0" prefWidth="132.0" />
+
+        <VBox alignment="CENTER" spacing="6">
+            <Label style="-fx-font-size:11px;-fx-font-weight:700;-fx-text-fill:-fx-text-3;" text="DEVELOPED BY" />
+        </VBox>
+
+        <HBox alignment="CENTER" spacing="40">
+
+            <VBox alignment="CENTER" prefWidth="220" spacing="8" styleClass="settings-card">
+                <padding><Insets bottom="28" left="28" right="28" top="28" /></padding>
+                <Label style="-fx-font-size:16px;-fx-font-weight:800;-fx-text-fill:-fx-text-1;" text="Abdullah Al Zabir Zamee" wrapText="true" />
+                <Label style="-fx-font-size:14px;-fx-text-fill:-fx-accent;-fx-font-weight:600;" text="2405145" />
+            </VBox>
+
+            <VBox alignment="CENTER" prefWidth="220" spacing="8" styleClass="settings-card">
+                <padding><Insets bottom="28" left="28" right="28" top="28" /></padding>
+                <Label style="-fx-font-size:16px;-fx-font-weight:800;-fx-text-fill:-fx-text-1;" text="Mahir Morshed" />
+                <Label style="-fx-font-size:14px;-fx-text-fill:-fx-accent;-fx-font-weight:600;" text="2405150" />
+            </VBox>
+
+        </HBox>
+
+        <Label style="-fx-font-size:12px;-fx-text-fill:-fx-text-3;" text="Built with JavaFX" />
+
+    </VBox>
+</VBox>
