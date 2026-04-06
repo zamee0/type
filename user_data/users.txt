@@ -35,3 +35,6 @@ tttt:1234
 npl:1234
 kkkm:1234
 lllll:1234
+newplayerssss:1234
+again:1234
+newone:1234

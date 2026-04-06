@@ -59,7 +59,6 @@ public class UserManager {
         } catch (IOException e) { e.printStackTrace(); }
     }
 
-    // Returns newest-first. Each entry: [wpm, accuracy, timeSeconds, timestamp]
     public static List<String[]> getUserHistory(String username) {
         List<String[]> list = new ArrayList<>();
         String histFile = USER_DATA_DIR + "/" + username + "_history.txt";
@@ -79,7 +78,6 @@ public class UserManager {
         if (f.exists()) f.delete();
     }
 
-    // Top 10 by best WPM. Each entry: [username, bestWpm]
     public static List<String[]> getLeaderboard() {
         Map<String, Double> best = new HashMap<>();
         File dir = new File(USER_DATA_DIR);

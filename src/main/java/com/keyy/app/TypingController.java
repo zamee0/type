@@ -38,7 +38,7 @@ public class TypingController {
     @FXML private Button dashboardBtn;
     @FXML private Button closeBtn;
 
-    // ── State ──────────────────────────────────────────────────────────────────
+
     private String username;
     private Difficulty difficulty = Difficulty.NORMAL;
     private int totalSeconds = 60;
@@ -54,7 +54,7 @@ public class TypingController {
     private Timeline liveWpmTimer;
     private final Random rand = new Random();
 
-    // ── Initialize ─────────────────────────────────────────────────────────────
+
     @FXML
     public void initialize() {
         resultPane.setVisible(false);
@@ -64,7 +64,7 @@ public class TypingController {
         closeBtn.setOnAction(e -> ((Stage) rootVBox.getScene().getWindow()).close());
     }
 
-    // Called by GameSetupController after scene is loaded
+
     public void setup(String username, Difficulty difficulty, int seconds) {
         this.username     = username;
         this.difficulty   = difficulty;
@@ -86,7 +86,7 @@ public class TypingController {
         });
     }
 
-    // ── Word Queue ─────────────────────────────────────────────────────────────
+
     private void buildWordQueue(int count) {
         wordQueue.clear();
         String[] bank = bankFor(difficulty);
@@ -100,7 +100,7 @@ public class TypingController {
             wordQueue.add(bank[rand.nextInt(bank.length)]);
     }
 
-    // ── Render ─────────────────────────────────────────────────────────────────
+
     private void renderTextFlow() {
         textFlow.getChildren().clear();
         hadError.clear();
@@ -126,7 +126,7 @@ public class TypingController {
         return sb.toString();
     }
 
-    // ── Timers ─────────────────────────────────────────────────────────────────
+
     private void startCountdown() {
         if (countdown != null) countdown.stop();
         countdown = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
@@ -156,7 +156,7 @@ public class TypingController {
         liveWpmTimer.play();
     }
 
-    // ── Key Handling ───────────────────────────────────────────────────────────
+
     private void handleKeyPress(KeyEvent event) {
         if (timeLeft <= 0) return;
         String typed = event.getCharacter();
@@ -185,8 +185,7 @@ public class TypingController {
         currentCharIndex++;
 
         // Word completed when a space is typed correctly
-        if (correct && currentCharIndex > 0
-                && full.charAt(currentCharIndex - 1) == ' ') {
+        if (correct && currentCharIndex > 0&& full.charAt(currentCharIndex - 1) == ' ') {
             wordsCompleted++;
             if (full.length() - currentCharIndex < 150)
                 appendWordsToFlow(20);
@@ -214,7 +213,7 @@ public class TypingController {
         Text prev = (Text) textFlow.getChildren().get(currentCharIndex);
         prev.getStyleClass().clear();
         prev.getStyleClass().add("typing-cursor");
-        // hadError stays — mistake is permanent
+
     }
 
     private void appendWordsToFlow(int count) {
@@ -231,7 +230,7 @@ public class TypingController {
         }
     }
 
-    // ── Result ─────────────────────────────────────────────────────────────────
+
     private void showResult() {
         if (countdown != null) countdown.stop();
         if (liveWpmTimer != null) liveWpmTimer.stop();
@@ -257,7 +256,6 @@ public class TypingController {
         resultPane.setManaged(true);
     }
 
-    // ── Restart ────────────────────────────────────────────────────────────────
     private void restart() {
         wordQueue.clear();
         hadError.clear();
