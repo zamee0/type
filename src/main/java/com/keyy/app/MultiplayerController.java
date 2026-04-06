@@ -164,7 +164,7 @@ public class MultiplayerController {
         liveWpmTimer = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
             int elapsed = GAME_SECONDS - timeLeft;
             if (elapsed > 0) {
-                double currentWpm = (currentCharIndex / 5.0) / (elapsed / 60.0);
+                double currentWpm = wordsCompleted / (elapsed / 60.0);
                 wpmLiveLabel.setText(String.format("%.0f WPM", currentWpm));
                 tickCount++;
                 if (tickCount % 5 == 0) myWpmHistory.add(currentWpm);
@@ -277,9 +277,16 @@ public class MultiplayerController {
             if (!hadError.containsKey(i)) clean++;
 
         double myAcc = currentCharIndex > 0 ? (clean * 100.0) / currentCharIndex : 100;
-        // Standard WPM: characters typed / 5 / minutes
         double minutes = GAME_SECONDS / 60.0;
-        double myWpm = (currentCharIndex / 5.0) / minutes;
+        // last word যদি space ছাড়া শেষ হয়ে থাকে সেটাও count করছি
+        String full = fullText();
+        int lastSpaceBeforeCursor = full.lastIndexOf(' ', currentCharIndex - 1);
+        boolean lastWordCorrect = true;
+        for (int i = lastSpaceBeforeCursor + 1; i < currentCharIndex; i++) {
+            if (hadError.containsKey(i)) { lastWordCorrect = false; break; }
+        }
+        int totalWords = wordsCompleted + (lastWordCorrect && currentCharIndex > 0 ? 1 : 0);
+        double myWpm = totalWords / minutes;
 
         allFinalWpm.put(username, myWpm);
         allFinalAcc.put(username, myAcc);

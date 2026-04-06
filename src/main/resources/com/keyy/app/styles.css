@@ -1,9 +1,4 @@
-/* ============================================================
-   KEYY — styles.css
-   Light mode default. Dark mode via .dark-mode on root.
-   ============================================================ */
 
-/* ── Light Mode ────────────────────────────────────────────── */
 .root-pane, .light-mode {
     -fx-bg:          #F0EFEC;
     -fx-surface:     #FFFFFF;
@@ -23,8 +18,6 @@
     -fx-background-color: -fx-bg;
     -fx-font-family: 'Segoe UI', 'SF Pro Text', Arial, sans-serif;
 }
-
-/* ── Dark Mode — lighter than before ──────────────────────── */
 .dark-mode {
     -fx-bg:          #1A1A1A;
     -fx-surface:     #242424;
@@ -44,7 +37,6 @@
     -fx-background-color: -fx-bg;
 }
 
-/* Force all containers to inherit background */
 .root-pane, .dark-mode,
 .dark-mode VBox, .dark-mode HBox,
 .dark-mode BorderPane, .dark-mode StackPane,
@@ -53,14 +45,14 @@
     -fx-background-color: -fx-bg;
 }
 
-/* Light mode containers */
+
 .light-mode VBox, .light-mode HBox,
 .light-mode BorderPane, .light-mode StackPane,
 .light-mode AnchorPane {
     -fx-background-color: -fx-bg;
 }
 
-/* ── LOGIN ─────────────────────────────────────────────────── */
+
 .login-left {
     -fx-background-color: #141414;
     -fx-min-height: 600;
@@ -142,7 +134,7 @@
 .msg-success { -fx-text-fill: -fx-green; -fx-font-size: 12px; }
 .footer-text { -fx-text-fill: -fx-text-3; -fx-font-size: 11px; -fx-padding: 16 0 0 0; }
 
-/* ── BUTTONS ────────────────────────────────────────────────── */
+
 .btn-primary {
     -fx-background-color: -fx-accent;
     -fx-text-fill: white;
@@ -205,7 +197,7 @@
 }
 .btn-ghost:hover { -fx-background-color: -fx-surface2; -fx-text-fill: -fx-text-1; }
 
-/* ── SIDEBAR ────────────────────────────────────────────────── */
+/* sidebar*/
 .sidebar { -fx-background-color: -fx-sidebar-bg; }
 .sidebar-logo {
     -fx-font-size: 26px;
@@ -237,7 +229,7 @@
 }
 .nav-btn-logout:hover { -fx-background-color: rgba(255,107,107,0.10); }
 
-/* ── DASHBOARD ──────────────────────────────────────────────── */
+/*DASHBOARD*/
 .dash-main { -fx-background-color: -fx-bg; }
 .welcome-title { -fx-font-size: 30px; -fx-font-weight: 800; -fx-text-fill: -fx-text-1; }
 .welcome-sub   { -fx-font-size: 14px; -fx-text-fill: -fx-text-2; }
@@ -253,7 +245,7 @@
 .stat-icon  { -fx-font-size: 12px; -fx-font-weight: 800; -fx-text-fill: -fx-accent; }
 .stat-desc  { -fx-font-size: 12px; -fx-text-fill: -fx-text-2; }
 
-/* ── PAGE HEADER ────────────────────────────────────────────── */
+/* PAGE HEADER  */
 .page-header {
     -fx-background-color: -fx-surface;
     -fx-border-color: transparent transparent -fx-border transparent;
@@ -289,7 +281,7 @@
     -fx-border-color: -fx-accent;
 }
 
-/* ── TYPING GAME ────────────────────────────────────────────── */
+/*TYPING GAME */
 .timer-big {
     -fx-font-size: 52px;
     -fx-font-weight: 900;
@@ -354,7 +346,7 @@
 .result-big   { -fx-font-size: 42px; -fx-font-weight: 900; -fx-text-fill: -fx-accent; }
 .result-label { -fx-font-size: 11px; -fx-font-weight: 700; -fx-text-fill: -fx-text-3; -fx-letter-spacing: 1; }
 
-/* ── PROFILE ────────────────────────────────────────────────── */
+
 .avatar-icon {
     -fx-font-size: 44px;
     -fx-background-color: -fx-surface;
@@ -405,7 +397,7 @@
 .history-detail    { -fx-font-size: 12px; -fx-text-fill: -fx-text-2; }
 .history-timestamp { -fx-font-size: 11px; -fx-text-fill: -fx-text-3; }
 
-/* ── LEADERBOARD ────────────────────────────────────────────── */
+
 .lb-row {
     -fx-background-color: -fx-surface;
     -fx-background-radius: 10;
@@ -425,7 +417,7 @@
 .lb-name { -fx-font-size: 15px; -fx-font-weight: 600; -fx-text-fill: -fx-text-1; }
 .lb-wpm  { -fx-font-size: 15px; -fx-font-weight: 800; -fx-text-fill: -fx-accent; }
 
-/* ── SETTINGS ───────────────────────────────────────────────── */
+
 .settings-card {
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 12;
@@ -471,14 +463,13 @@
 }
 .toggle-btn:hover:!selected { -fx-background-color: -fx-border; }
 
-/* ── SCROLLBARS ─────────────────────────────────────────────── */
+
 .scroll-bar:vertical              { -fx-background-color: transparent; -fx-pref-width: 8; }
 .scroll-bar:vertical .thumb      { -fx-background-color: -fx-border; -fx-background-radius: 4; }
 .scroll-bar:vertical .track      { -fx-background-color: transparent; }
 .scroll-bar .increment-button,
 .scroll-bar .decrement-button    { -fx-background-color: transparent; -fx-pref-height: 0; }
 
-/* ── CHARTS ─────────────────────────────────────────────────── */
 .chart { -fx-background-color: transparent; }
 .chart-plot-background { -fx-background-color: transparent; }
 .chart-content { -fx-padding: 10; }

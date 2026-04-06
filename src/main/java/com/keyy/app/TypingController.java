@@ -22,7 +22,7 @@ public class TypingController {
         };
     }
 
-    // ── FXML ───────────────────────────────────────────────────────────────────
+
     @FXML private VBox rootVBox;
     @FXML private VBox typingPane;
     @FXML private VBox resultPane;
@@ -79,7 +79,7 @@ public class TypingController {
         startCountdown();
         startLiveWpm();
 
-        // Attach keyboard after scene graph is fully settled
+
         javafx.application.Platform.runLater(() -> {
             if (rootVBox.getScene() != null)
                 rootVBox.getScene().setOnKeyTyped(this::handleKeyPress);
