@@ -27,7 +27,7 @@
 git clone https://github.com/zamee0/type.git
 
 # 2. Open in IntelliJ IDEA
-# File → Open → select the Type folder
+# File → Open → select the Cloned folder
 
 # 3. Let Maven load dependencies automatically
 
