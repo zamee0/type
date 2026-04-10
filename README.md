@@ -10,8 +10,6 @@
 
 **Test your typing speed. Compete with friends. Track your progress.**
 
-<!-- Add your app screenshot here -->
-<!-- ![KEYY Screenshot](screenshots/dashboard.png) -->
 
 </div>
 
